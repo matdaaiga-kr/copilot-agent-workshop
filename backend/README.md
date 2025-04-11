@@ -28,7 +28,7 @@ This project is a backend server built with FastAPI to support a Threads-like ap
 1. Install dependencies:
 
    ```bash
-   pip install fastapi uvicorn
+   pip install fastapi uvicorn python-dotenv passlib python-jose sqlalchemy
    ```
 
 2. Run the server:
