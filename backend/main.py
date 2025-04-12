@@ -1,6 +1,8 @@
 import os
 from fastapi import FastAPI
 from fastapi.openapi.utils import get_openapi
+from fastapi.staticfiles import StaticFiles
+from pathlib import Path
 
 from app.database.database import engine
 from app.models.models import Base
@@ -11,6 +13,14 @@ Base.metadata.create_all(bind=engine)
 
 # Initialize FastAPI app
 app = FastAPI()
+
+# 정적 파일 서비스를 위한 디렉토리 설정
+uploads_dir = Path("uploads")
+if not uploads_dir.exists():
+    uploads_dir.mkdir(parents=True)
+
+# 정적 파일 제공을 위한 라우터 추가
+app.mount("/uploads", StaticFiles(directory="uploads"), name="uploads")
 
 # Include routers
 app.include_router(auth.router, prefix="/auth", tags=["Authentication"])

@@ -21,7 +21,7 @@ class UserResponse(BaseModel):
     created_at: datetime
     
     class Config:
-        orm_mode = True
+        from_attributes = True
 
 class PostCreate(BaseModel):
     content: str
@@ -38,7 +38,7 @@ class PostResponse(BaseModel):
     updated_at: datetime
     
     class Config:
-        orm_mode = True
+        from_attributes = True
 
 class CommentCreate(BaseModel):
     content: str
@@ -55,7 +55,7 @@ class CommentResponse(BaseModel):
     updated_at: datetime
     
     class Config:
-        orm_mode = True
+        from_attributes = True
 
 class Token(BaseModel):
     access_token: str
