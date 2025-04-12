@@ -3,7 +3,7 @@ from dotenv import load_dotenv
 from fastapi import FastAPI, Depends, HTTPException, Body
 from fastapi.security import OAuth2PasswordBearer
 from jose import JWTError, jwt
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 from passlib.context import CryptContext
 from sqlalchemy import create_engine, Column, Integer, String, ForeignKey, DateTime, Text, UniqueConstraint
 from sqlalchemy.ext.declarative import declarative_base
@@ -11,7 +11,7 @@ from sqlalchemy.orm import sessionmaker, relationship, Session
 from fastapi.openapi.models import OAuthFlows as OAuthFlowsModel
 from fastapi.security import OAuth2
 from fastapi.openapi.utils import get_openapi
-from pydantic import BaseModel, EmailStr
+from pydantic import BaseModel
 
 # Load environment variables
 load_dotenv()
@@ -20,16 +20,14 @@ app = FastAPI()
 
 # Pydantic models for request validation
 class UserCreate(BaseModel):
-    email: EmailStr
+    username: str
     password: str
-    username: str = None
 
 class UserLogin(BaseModel):
-    email: EmailStr
+    username: str
     password: str
 
 class UserUpdate(BaseModel):
-    email: EmailStr = None
     username: str = None
     profile_image: str = None
 
@@ -54,11 +52,10 @@ Base = declarative_base()
 class User(Base):
     __tablename__ = "users"
     id = Column(Integer, primary_key=True, index=True)
-    email = Column(String, unique=True, index=True)
-    hashed_password = Column(String)
     username = Column(String, unique=True, index=True)
+    hashed_password = Column(String)
     profile_image = Column(String, nullable=True)
-    created_at = Column(DateTime, default=datetime.utcnow)
+    created_at = Column(DateTime, default=lambda: datetime.now(timezone.utc))
     
     # Relationships
     posts = relationship("Post", back_populates="user")
@@ -70,8 +67,8 @@ class Post(Base):
     content = Column(Text, nullable=False)
     owner_id = Column(Integer, ForeignKey("users.id"))
     likes = Column(Integer, default=0)
-    created_at = Column(DateTime, default=datetime.utcnow)
-    updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+    created_at = Column(DateTime, default=lambda: datetime.now(timezone.utc))
+    updated_at = Column(DateTime, default=lambda: datetime.now(timezone.utc), onupdate=lambda: datetime.now(timezone.utc))
     
     # Relationships
     user = relationship("User", back_populates="posts")
@@ -83,8 +80,8 @@ class Comment(Base):
     content = Column(Text, nullable=False)
     post_id = Column(Integer, ForeignKey("posts.id", ondelete="CASCADE"))
     owner_id = Column(Integer, ForeignKey("users.id"))
-    created_at = Column(DateTime, default=datetime.utcnow)
-    updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+    created_at = Column(DateTime, default=lambda: datetime.now(timezone.utc))
+    updated_at = Column(DateTime, default=lambda: datetime.now(timezone.utc), onupdate=lambda: datetime.now(timezone.utc))
     
     # Relationships
     post = relationship("Post", back_populates="comments")
@@ -95,7 +92,7 @@ class Follower(Base):
     id = Column(Integer, primary_key=True, index=True)
     follower_id = Column(Integer, ForeignKey("users.id"))
     following_id = Column(Integer, ForeignKey("users.id"))
-    created_at = Column(DateTime, default=datetime.utcnow)
+    created_at = Column(DateTime, default=lambda: datetime.now(timezone.utc))
     
     # Add a unique constraint to prevent duplicate follows
     __table_args__ = (
@@ -107,7 +104,7 @@ class Like(Base):
     id = Column(Integer, primary_key=True, index=True)
     user_id = Column(Integer, ForeignKey("users.id"))
     post_id = Column(Integer, ForeignKey("posts.id", ondelete="CASCADE"))
-    created_at = Column(DateTime, default=datetime.utcnow)
+    created_at = Column(DateTime, default=lambda: datetime.now(timezone.utc))
     
     # Add a unique constraint to prevent duplicate likes
     __table_args__ = (
@@ -136,16 +133,16 @@ ALGORITHM = "HS256"
 def create_access_token(data: dict, expires_delta: timedelta | None = None):
     to_encode = data.copy()
     if expires_delta:
-        expire = datetime.utcnow() + expires_delta
+        expire = datetime.now(timezone.utc) + expires_delta
     else:
-        expire = datetime.utcnow() + timedelta(minutes=15)
+        expire = datetime.now(timezone.utc) + timedelta(minutes=15)
     to_encode.update({"exp": expire})
     encoded_jwt = jwt.encode(to_encode, SECRET_KEY, algorithm=ALGORITHM)
     return encoded_jwt
 
 def create_refresh_token(data: dict):
     to_encode = data.copy()
-    expire = datetime.utcnow() + timedelta(days=7)
+    expire = datetime.now(timezone.utc) + timedelta(days=7)
     to_encode.update({"exp": expire})
     encoded_jwt = jwt.encode(to_encode, SECRET_KEY, algorithm=ALGORITHM)
     return encoded_jwt
@@ -179,13 +176,13 @@ def get_db():
 @app.post("/auth/signup")
 def signup(user: UserCreate, db: Session = Depends(get_db)):
     # Check if user already exists
-    existing_user = db.query(User).filter(User.email == user.email).first()
+    existing_user = db.query(User).filter(User.username == user.username).first()
     if existing_user:
-        raise HTTPException(status_code=400, detail="Email already registered")
+        raise HTTPException(status_code=400, detail="Username already registered")
 
     # Hash password and save user
     hashed_password = get_password_hash(user.password)
-    new_user = User(email=user.email, hashed_password=hashed_password, username=user.username)
+    new_user = User(username=user.username, hashed_password=hashed_password)
     db.add(new_user)
     db.commit()
     db.refresh(new_user)
@@ -195,9 +192,9 @@ def signup(user: UserCreate, db: Session = Depends(get_db)):
 @app.post("/auth/login")
 def login(user: UserLogin, db: Session = Depends(get_db)):
     # Retrieve user from database
-    existing_user = db.query(User).filter(User.email == user.email).first()
+    existing_user = db.query(User).filter(User.username == user.username).first()
     if not existing_user or not verify_password(user.password, existing_user.hashed_password):
-        raise HTTPException(status_code=401, detail="Invalid email or password")
+        raise HTTPException(status_code=401, detail="Invalid username or password")
 
     # Generate tokens
     access_token_expires = timedelta(minutes=30)
@@ -215,7 +212,7 @@ def get_my_info(db: Session = Depends(get_db), user_id: int = Depends(verify_tok
     user = db.query(User).filter(User.id == user_id).first()
     if not user:
         raise HTTPException(status_code=404, detail="User not found")
-    return {"user": {"id": user.id, "email": user.email, "username": user.username, "profile_image": user.profile_image}}
+    return {"user": {"id": user.id, "username": user.username, "profile_image": user.profile_image}}
 
 @app.get("/users/{id}")
 def get_user_profile(id: int, db: Session = Depends(get_db)):
@@ -223,7 +220,7 @@ def get_user_profile(id: int, db: Session = Depends(get_db)):
     user = db.query(User).filter(User.id == id).first()
     if not user:
         raise HTTPException(status_code=404, detail="User not found")
-    return {"user": {"id": user.id, "email": user.email, "username": user.username, "profile_image": user.profile_image}}
+    return {"user": {"id": user.id, "username": user.username, "profile_image": user.profile_image}}
 
 @app.put("/users/me")
 def update_my_info(user_update: UserUpdate, db: Session = Depends(get_db), user_id: int = Depends(verify_token)):
@@ -232,8 +229,6 @@ def update_my_info(user_update: UserUpdate, db: Session = Depends(get_db), user_
     if not user:
         raise HTTPException(status_code=404, detail="User not found")
     
-    if user_update.email:
-        user.email = user_update.email
     if user_update.username:
         user.username = user_update.username
     if user_update.profile_image:
@@ -413,7 +408,7 @@ def get_profile(db: Session = Depends(get_db), user_id: int = Depends(verify_tok
     user = db.query(User).filter(User.id == user_id).first()
     if not user:
         raise HTTPException(status_code=404, detail="User not found")
-    return {"profile": {"id": user.id, "email": user.email, "username": user.username, "profile_image": user.profile_image}}
+    return {"profile": {"id": user.id, "username": user.username, "profile_image": user.profile_image}}
 
 @app.get("/profile/posts")
 def get_my_posts(db: Session = Depends(get_db), user_id: int = Depends(verify_token)):
