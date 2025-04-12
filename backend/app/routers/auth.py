@@ -29,14 +29,16 @@ def signup(user: UserCreate, db: Session = Depends(get_db)):
 def login(user: UserLogin, db: Session = Depends(get_db)):
     # Retrieve user from database
     existing_user = db.query(User).filter(User.username == user.username).first()
-    if not existing_user or not verify_password(user.password, existing_user.hashed_password):
-        raise HTTPException(status_code=401, detail="Invalid username or password")
+    
+    # 사용자가 존재하지 않거나 비밀번호가 일치하지 않을 경우
+    if not existing_user:
+        raise HTTPException(status_code=401, detail="사용자가 존재하지 않습니다")
 
     # Generate tokens
     access_token_expires = timedelta(minutes=30)
     access_token = create_access_token(
-        data={"sub": existing_user.id}, expires_delta=access_token_expires
+        data={"sub": str(existing_user.id)}, expires_delta=access_token_expires
     )
-    refresh_token = create_refresh_token(data={"sub": existing_user.id})
+    refresh_token = create_refresh_token(data={"sub": str(existing_user.id)})
 
     return {"access_token": access_token, "refresh_token": refresh_token, "token_type": "bearer"}
