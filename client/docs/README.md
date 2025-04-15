@@ -14,7 +14,10 @@
 1. 대화창 하단의 드롭다운 버튼을 눌러 AI 모델을 `Claude 3.7 Sonnet`으로 바꿉니다.
    ![screenshot](./screenshot4.png)
 
-1. 에이전트 모드를 사용할 준비가 되었습니다. 이제 Figma MCP를 설정해보겠습니다. 대화창 하단의 `도구 선택` 버튼을 누릅니다.
+1. 에이전트 모드를 사용할 준비가 되었습니다. 이제 에이전트가 MCP를 사용 설정 하겠습니다. 설정에서 `MCP`를 검색하여 사용을 활성화 해 줍니다. 
+   ![screenshot](./screenshot13.png)
+
+1. Figma MCP를 설정해보겠습니다. 대화창 하단의 `도구 선택` 버튼을 누릅니다.
    ![screenshot](./screenshot5.png)
 
 1. `MCP 서버 추가` - `NPM 패키지`를 선택합니다.  
