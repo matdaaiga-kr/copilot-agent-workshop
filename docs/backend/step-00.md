@@ -10,8 +10,7 @@
 
 1. 터미널에서 아래 명령어를 실행시켜 현재 git CLI를 설치했는지 확인합니다.
 
-   > [!WARNING]
-   > 자신이 사용 중인 터미널 종류에 따라 다음 두 명령어 중 하나를 입력합니다.
+   > ⚠️ 주의 : 자신이 사용 중인 터미널 종류에 따라 다음 두 명령어 중 하나를 입력합니다.
 
    ```bash
    # Bash/Zsh
@@ -37,8 +36,7 @@
 
 1. 터미널에서 아래 명령어를 실행시켜 현재 GitHub CLI를 설치했는지 확인합니다.
 
-   > [!WARNING]
-   > 자신이 사용 중인 터미널 종류에 따라 다음 두 명령어 중 하나를 입력합니다.
+   > ⚠️ 주의 : 자신이 사용 중인 터미널 종류에 따라 다음 두 명령어 중 하나를 입력합니다.
 
    ```bash
    # Bash/Zsh
@@ -72,8 +70,7 @@
 
 1. 터미널에서 아래 명령어를 실행시켜 현재 Visual Studio Code를 설치했는지 확인합니다.
 
-   > [!WARNING]
-   > 자신이 사용 중인 터미널 종류에 따라 다음 두 명령어 중 하나를 입력합니다.
+   > ⚠️ 주의 : 자신이 사용 중인 터미널 종류에 따라 다음 두 명령어 중 하나를 입력합니다.
 
    ```bash
    # Bash/Zsh
@@ -119,8 +116,7 @@
 
    이 명령어를 실행하면 아래와 같은 결과가 나와야 합니다.
 
-   > [!CAUTION]
-   > 만약 `origin`에 `matdaaiga-kr`이 보이면 자신의 리포지토리에서 다시 클론해야 합니다.
+   > ⚠️ 주의 : 만약 `origin`에 `matdaaiga-kr`이 보이면 자신의 리포지토리에서 다시 클론해야 합니다.
 
    ```bash
    origin  https://github.com/<자신의 GitHub ID>/copilot-agent-workshop.git (fetch)
@@ -131,8 +127,7 @@
 
 5. Visual Studio Code의 터미널에서 아래 명령어를 실행시켜 [GitHub Copilot 익스텐션](https://marketplace.visualstudio.com/items?itemName=GitHub.copilot)과 [GitHub Copilot Chat 익스텐션](https://marketplace.visualstudio.com/items?itemName=GitHub.copilot-chat)을 설치했는지 확인합니다.
 
-   > [!WARNING]
-   > 자신이 사용 중인 터미널 종류에 따라 다음 두 명령어 중 하나를 입력합니다.
+   > ⚠️ 주의 : 자신이 사용 중인 터미널 종류에 따라 다음 두 명령어 중 하나를 입력합니다.
 
    ```bash
    # Bash/Zsh
