@@ -29,8 +29,6 @@ backend
 ├── .github
 │   └── copilot-instructions.md
 ├── api-document.yaml
-│
-└── 이하 나머지 폴더들...
 ```
 
 1. 아래 명령어를 입력해 실습 디렉토리를 만들고 시작 프로젝트를 복사합니다.

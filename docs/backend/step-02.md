@@ -42,3 +42,28 @@
    ```
 6. 이제 프로젝트의 오류를 마주칠 때 해당 오류를 수정해달라는 내용을 프롬프트에 입력합니다.
    > 🥕 팁 : 바이브 코딩의 묘미는 "해줘"체를 사용하는 것입니다.
+
+# 번외) 완성된 버전의 백엔드 프로젝트를 실행해보고 싶다면?
+
+1. 아래 명령어를 터미널에 입력합니다.
+   ```bash
+   cd $REPOSITORY_ROOT/complete/backend
+   ```
+2. 아래 명령어를 터미널에 입력해 `.env` 파일을 생성합니다.
+
+   ```bash
+   touch .env
+   ```
+
+   ```powershell
+   New-Item -Path .env -ItemType File
+   ```
+
+3. `.env` 파일을 열고 다음 내용을 입력합니다.
+   ```text
+   DATABASE_URL=sqlite:///./app.db
+   SECRET_KEY=09d25e094faa6ca2556c818166b7a9563b93f7099f6f0f4caa6cf63b88e8d3e7
+   ALGORITHM=HS256
+   ACCESS_TOKEN_EXPIRE_MINUTES=1440
+   ```
+4. [complete/backend/README.md](/complete/backend/README.md) 파일의 `실행 방법` 섹션에 따라 명령어를 입력해 프로젝트를 실행합니다.
