@@ -52,11 +52,10 @@ paths:
     delete:
       summary: 게시물 좋아요 취소
 
-  # 팔로우 (Followers) 관련
-  /followers:
+  # 팔로우 (Follows) 관련
+  /follows/{user_id}:
     post:
       summary: 사용자 팔로우
-  /followers/{following_id}:
     delete:
       summary: 사용자 언팔로우
 
