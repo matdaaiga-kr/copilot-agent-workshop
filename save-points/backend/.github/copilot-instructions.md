@@ -32,9 +32,7 @@ This is a FastAPI backend project for a Threads-like application. Please ensure 
 
 <!-- Project Documentation -->
 
-- Do not modify `api-document.yaml` file
 - Document the application execution process in the `README.md` file
-- Create an `api-result.yaml` file documenting all implemented API endpoints with their paths, methods, parameters, and response structures
 
 <!-- Language Preference -->
 
