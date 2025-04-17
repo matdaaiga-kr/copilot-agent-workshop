@@ -22,15 +22,6 @@
 
 ## 시작 프로젝트 복사
 
-미리 `save-points` 폴더에 필요한 파일들을 준비해 뒀습니다. 복사 후 백엔드 프로젝트 구조는 다음과 같습니다.
-
-```text
-backend
-├── .github
-│   └── copilot-instructions.md
-├── api-document.yaml
-```
-
 1. 아래 명령어를 입력해 실습 디렉토리를 만들고 시작 프로젝트를 복사합니다.
 
    > ⚠️ 주의 : 자신이 사용 중인 터미널 종류에 따라 다음 두 명령어 중 하나를 입력합니다.
@@ -38,13 +29,15 @@ backend
    ```bash
    # Bash/Zsh
    mkdir -p $REPOSITORY_ROOT/backend && \
-       cp -a $REPOSITORY_ROOT/save-points/backend/. $REPOSITORY_ROOT/backend/
+      cp -a $REPOSITORY_ROOT/save-points/backend/. $REPOSITORY_ROOT/backend/ && \
+      cp $REPOSITORY_ROOT/save-points/openapi.json $REPOSITORY_ROOT/backend/
    ```
 
    ```powershell
    # PowerShell
    New-Item -Type Directory -Path $REPOSITORY_ROOT/backend -Force && `
-       Copy-Item -Path $REPOSITORY_ROOT/save-points/step-01/* -Destination $REPOSITORY_ROOT/backend -Recurse -Force
+      Copy-Item -Path $REPOSITORY_ROOT/save-points/backend/* -Destination $REPOSITORY_ROOT/backend -Recurse -Force && `
+      Copy-Item -Path $REPOSITORY_ROOT/save-points/openapi.json -Destination $REPOSITORY_ROOT/backend -Force
    ```
 
 2. 백엔드 프로젝트로 이동합니다.
