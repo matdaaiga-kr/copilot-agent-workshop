@@ -2,11 +2,6 @@
 
 This is a FastAPI backend project for a Threads-like application. Please ensure that generated code aligns with the following features:
 
-- Authentication (Signup, Login)
-  - Use JWT token based authentication
-- Posts (Create, View, Like, Comment)
-- Profile (View Profile, My Posts, Followers, Following)
-
 <!-- Architecture and Database -->
 
 - Follow MVC (Model-View-Controller) pattern:
@@ -23,12 +18,10 @@ This is a FastAPI backend project for a Threads-like application. Please ensure 
 - Never commit sensitive credentials to version control
 - Load environment variables using python-dotenv
 
-<!-- Authentication Implementation -->
+<!-- File Creation and Code Generation -->
 
-- Use HTTPBearer instead of OAuth2PasswordBearer for authentication to allow direct access token input in Swagger UI
-- Set token expiration time to 1 day (24 hours or 1440 minutes)
-- Implement exception handling for JWTError and other authentication-related exceptions
-- Ensure proper token validation and user verification
+- When creating files and adding content, automatically generate the necessary folders and files without asking the user to use terminal commands
+- Automatically write code in newly created files without requiring manual file creation steps
 
 <!-- Project Documentation -->
 

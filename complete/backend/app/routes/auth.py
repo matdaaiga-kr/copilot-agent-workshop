@@ -1,63 +1,35 @@
 from fastapi import APIRouter, Depends, HTTPException, status
-from fastapi.security import HTTPBearer
 from sqlalchemy.orm import Session
-from datetime import timedelta
-from typing import Dict
+from app.database import get_db
+from app.models.schemas import UserLoginSimple, UserLoginResponse
+from app.controllers import auth_service
 
-from ..models.database import get_db
-from ..schemas.schemas import UserCreate, UserLogin, Token, ErrorResponse, SuccessResponse
-from ..services.auth import create_access_token, create_refresh_token
-from ..services.user import create_user, authenticate_user
-
+# 라우터 생성
 router = APIRouter(
-    prefix="/auth",
-    tags=["인증"],
-    responses={
-        status.HTTP_401_UNAUTHORIZED: {"model": ErrorResponse}
-    }
+    tags=["Login"]
 )
 
-security = HTTPBearer()
-
-@router.post("/signup", response_model=SuccessResponse)
-async def signup(user: UserCreate, db: Session = Depends(get_db)):
+@router.post("/login", response_model=UserLoginResponse)
+def login(
+    login_data: UserLoginSimple,
+    db: Session = Depends(get_db)
+):
     """
-    새로운 사용자 등록
+    사용자명으로 로그인 처리
+    
+    - **username**: 인증에 사용할 사용자명
+    
+    존재하는 사용자명이면 해당 사용자 정보를 반환하고,
+    존재하지 않는 사용자명이면 새로운 사용자를 생성함
     """
-    try:
-        db_user = create_user(db, user)
-        return {"message": "회원가입이 성공적으로 완료되었습니다"}
-    except HTTPException as e:
-        raise e
-    except Exception as e:
+    # 사용자명 검증
+    if not login_data.username or len(login_data.username.strip()) == 0:
         raise HTTPException(
-            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail=f"서버 오류: {str(e)}"
-        )
-
-@router.post("/login", response_model=Token)
-async def login_for_access_token(user_data: UserLogin, db: Session = Depends(get_db)):
-    """
-    사용자 인증 및 액세스 토큰 발급
-    """
-    user = authenticate_user(db, user_data.username, user_data.password)
-    if not user:
-        raise HTTPException(
-            status_code=status.HTTP_401_UNAUTHORIZED,
-            detail="잘못된 사용자 이름 또는 비밀번호입니다",
-            headers={"WWW-Authenticate": "Bearer"},
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail={"error": "유효한 사용자명을 입력해주세요", "status_code": 400}
         )
     
-    # 토큰 생성
-    access_token = create_access_token(
-        data={"sub": user.username, "id": user.id}
-    )
-    refresh_token = create_refresh_token(
-        data={"sub": user.username, "id": user.id}
-    )
+    # 로그인 처리
+    result = auth_service.login_user(db, login_data.username.strip())
     
-    return {
-        "access_token": access_token,
-        "refresh_token": refresh_token,
-        "token_type": "bearer"
-    }
+    return result
