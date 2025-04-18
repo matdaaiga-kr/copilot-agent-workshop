@@ -1,8 +1,8 @@
-﻿{
+{
 	"openapi": "3.0.1",
 	"info": {
 		"title": "Threads-like Application API",
-		"description": "This is a Threads-like application backend API that allows users to create accounts, post content, follow other users, and interact via comments and likes",
+		"description": "This is a Threads-like application backend API that allows users to set a username, post content, follow other users, and interact via comments and likes. No formal authentication required - usernames are stored in browser localStorage.",
 		"version": "1.0.0",
 		"contact": {
 			"name": "API Support",
@@ -20,86 +20,40 @@
 		}
 	],
 	"paths": {
-		"/auth/signup": {
+		"/login": {
 			"post": {
-				"tags": ["Authentication"],
-				"summary": "Create a new user account",
-				"description": "Register a new user with username and password",
-				"operationId": "signup_auth_signup_post",
-				"requestBody": {
-					"content": {
-						"application/json": {
-							"schema": { "$ref": "#/components/schemas/UserCreate" }
-						}
-					},
-					"required": true,
-					"description": "User credentials required for registration"
-				},
-				"responses": {
-					"201": {
-						"description": "User created successfully",
-						"content": {
-							"application/json": {
-								"schema": { "$ref": "#/components/schemas/UserResponse" }
-							}
-						}
-					},
-					"400": {
-						"description": "Bad Request - Invalid input data",
-						"content": {
-							"application/json": {
-								"schema": { "$ref": "#/components/schemas/ErrorResponse" }
-							}
-						}
-					},
-					"409": {
-						"description": "Conflict - Username already exists",
-						"content": {
-							"application/json": {
-								"schema": { "$ref": "#/components/schemas/ErrorResponse" }
-							}
-						}
-					},
-					"422": {
-						"description": "Validation Error",
-						"content": {
-							"application/json": {
-								"schema": { "$ref": "#/components/schemas/HTTPValidationError" }
-							}
-						}
-					}
-				}
-			}
-		},
-		"/auth/login": {
-			"post": {
-				"tags": ["Authentication"],
-				"summary": "Authenticate a user and get access token",
-				"description": "Login with username and password to receive JWT access and refresh tokens",
+				"tags": ["Login"],
+				"summary": "Set username for the session",
+				"description": "Login with just username which will be stored in browser localStorage",
 				"operationId": "login_auth_login_post",
 				"requestBody": {
 					"content": {
 						"application/json": {
-							"schema": { "$ref": "#/components/schemas/UserLogin" }
+							"schema": { "$ref": "#/components/schemas/UserLoginSimple" }
 						}
 					},
 					"required": true,
-					"description": "User credentials required for authentication"
+					"description": "Username required for authentication"
 				},
 				"responses": {
 					"200": {
 						"description": "Login successful",
 						"content": {
 							"application/json": {
-								"schema": { "$ref": "#/components/schemas/Token" }
-							}
-						}
-					},
-					"401": {
-						"description": "Unauthorized - Invalid credentials",
-						"content": {
-							"application/json": {
-								"schema": { "$ref": "#/components/schemas/ErrorResponse" }
+								"schema": {
+									"type": "object",
+									"properties": {
+										"userId": {
+											"type": "integer",
+											"description": "User ID"
+										},
+										"username": {
+											"type": "string",
+											"description": "Username set for the session"
+										}
+									},
+									"required": ["userId", "username"]
+								}
 							}
 						}
 					},
@@ -112,83 +66,6 @@
 						}
 					}
 				}
-			}
-		},
-		"/users/me": {
-			"get": {
-				"tags": ["Users"],
-				"summary": "Get authenticated user's information",
-				"description": "Retrieve profile information for the currently authenticated user",
-				"operationId": "get_my_info_users_me_get",
-				"responses": {
-					"200": {
-						"description": "User information retrieved successfully",
-						"content": {
-							"application/json": {
-								"schema": { "$ref": "#/components/schemas/UserProfile" }
-							}
-						}
-					},
-					"401": {
-						"description": "Unauthorized - Invalid or expired token",
-						"content": {
-							"application/json": {
-								"schema": { "$ref": "#/components/schemas/ErrorResponse" }
-							}
-						}
-					}
-				},
-				"security": [{ "BearerAuth": [] }]
-			},
-			"put": {
-				"tags": ["Users"],
-				"summary": "Update authenticated user's information",
-				"description": "Update profile information for the currently authenticated user",
-				"operationId": "update_my_info_users_me_put",
-				"requestBody": {
-					"content": {
-						"multipart/form-data": {
-							"schema": { "$ref": "#/components/schemas/UserUpdate" }
-						}
-					},
-					"required": true,
-					"description": "User profile data to update"
-				},
-				"responses": {
-					"200": {
-						"description": "User information updated successfully",
-						"content": {
-							"application/json": {
-								"schema": { "$ref": "#/components/schemas/UserProfile" }
-							}
-						}
-					},
-					"400": {
-						"description": "Bad Request - Invalid input data",
-						"content": {
-							"application/json": {
-								"schema": { "$ref": "#/components/schemas/ErrorResponse" }
-							}
-						}
-					},
-					"401": {
-						"description": "Unauthorized - Invalid or expired token",
-						"content": {
-							"application/json": {
-								"schema": { "$ref": "#/components/schemas/ErrorResponse" }
-							}
-						}
-					},
-					"422": {
-						"description": "Validation Error",
-						"content": {
-							"application/json": {
-								"schema": { "$ref": "#/components/schemas/HTTPValidationError" }
-							}
-						}
-					}
-				},
-				"security": [{ "BearerAuth": [] }]
 			}
 		},
 		"/users/{userId}": {
@@ -231,98 +108,51 @@
 							}
 						}
 					}
-				},
-				"security": [{ "BearerAuth": [] }]
+				}
 			}
 		},
-		"/users/{userId}/follow": {
-			"post": {
-				"tags": ["Users"],
-				"summary": "Follow a user",
-				"description": "Start following another user",
-				"operationId": "follow_user_users__userId__follow_post",
-				"security": [{ "BearerAuth": [] }],
+		"/search": {
+			"get": {
+				"tags": ["Search"],
+				"summary": "Search users by username",
+				"description": "Search for users whose username matches the provided query string",
+				"operationId": "search_users_search_get",
 				"parameters": [
 					{
-						"name": "userId",
-						"in": "path",
+						"name": "username",
+						"in": "query",
 						"required": true,
-						"description": "ID of the user to follow",
-						"schema": { "type": "integer", "title": "User ID" }
+						"description": "Username to search for (partial match)",
+						"schema": { "type": "string", "title": "Username" }
+					},
+					{
+						"name": "page",
+						"in": "query",
+						"description": "Page number for pagination (1-indexed)",
+						"schema": {
+							"type": "integer",
+							"default": 1,
+							"minimum": 1
+						}
+					},
+					{
+						"name": "limit",
+						"in": "query",
+						"description": "Number of items per page",
+						"schema": {
+							"type": "integer",
+							"default": 10,
+							"minimum": 1,
+							"maximum": 100
+						}
 					}
 				],
 				"responses": {
 					"200": {
-						"description": "User followed successfully",
+						"description": "Users found successfully",
 						"content": {
 							"application/json": {
-								"schema": { "$ref": "#/components/schemas/FollowResponse" }
-							}
-						}
-					},
-					"400": {
-						"description": "Bad Request - Cannot follow yourself or already following",
-						"content": {
-							"application/json": {
-								"schema": { "$ref": "#/components/schemas/ErrorResponse" }
-							}
-						}
-					},
-					"404": {
-						"description": "Not Found - User to follow does not exist",
-						"content": {
-							"application/json": {
-								"schema": { "$ref": "#/components/schemas/ErrorResponse" }
-							}
-						}
-					},
-					"422": {
-						"description": "Validation Error",
-						"content": {
-							"application/json": {
-								"schema": { "$ref": "#/components/schemas/HTTPValidationError" }
-							}
-						}
-					}
-				}
-			},
-			"delete": {
-				"tags": ["Users"],
-				"summary": "Unfollow a user",
-				"description": "Stop following another user",
-				"operationId": "unfollow_user_users__userId__follow_delete",
-				"security": [{ "BearerAuth": [] }],
-				"parameters": [
-					{
-						"name": "userId",
-						"in": "path",
-						"required": true,
-						"description": "ID of the user to unfollow",
-						"schema": { "type": "integer", "title": "User ID" }
-					}
-				],
-				"responses": {
-					"200": {
-						"description": "User unfollowed successfully",
-						"content": {
-							"application/json": {
-								"schema": { "$ref": "#/components/schemas/FollowResponse" }
-							}
-						}
-					},
-					"400": {
-						"description": "Bad Request - Not following this user",
-						"content": {
-							"application/json": {
-								"schema": { "$ref": "#/components/schemas/ErrorResponse" }
-							}
-						}
-					},
-					"404": {
-						"description": "Not Found - User to unfollow does not exist",
-						"content": {
-							"application/json": {
-								"schema": { "$ref": "#/components/schemas/ErrorResponse" }
+								"schema": { "$ref": "#/components/schemas/UserList" }
 							}
 						}
 					},
@@ -340,9 +170,9 @@
 		"/posts": {
 			"get": {
 				"tags": ["Posts"],
-				"summary": "Get feed posts",
-				"description": "Retrieve posts from users the authenticated user is following",
-				"operationId": "get_all_posts_posts_get",
+				"summary": "Get posts list",
+				"description": "Retrieve a list of posts",
+				"operationId": "get_posts_list_posts_get",
 				"parameters": [
 					{
 						"name": "page",
@@ -376,15 +206,14 @@
 						}
 					},
 					"401": {
-						"description": "Unauthorized - Invalid or expired token",
+						"description": "Unauthorized - Invalid or expired session",
 						"content": {
 							"application/json": {
 								"schema": { "$ref": "#/components/schemas/ErrorResponse" }
 							}
 						}
 					}
-				},
-				"security": [{ "BearerAuth": [] }]
+				}
 			},
 			"post": {
 				"tags": ["Posts"],
@@ -418,7 +247,7 @@
 						}
 					},
 					"401": {
-						"description": "Unauthorized - Invalid or expired token",
+						"description": "Unauthorized - Invalid or expired session",
 						"content": {
 							"application/json": {
 								"schema": { "$ref": "#/components/schemas/ErrorResponse" }
@@ -433,8 +262,7 @@
 							}
 						}
 					}
-				},
-				"security": [{ "BearerAuth": [] }]
+				}
 			}
 		},
 		"/posts/{postId}": {
@@ -477,15 +305,13 @@
 							}
 						}
 					}
-				},
-				"security": [{ "BearerAuth": [] }]
+				}
 			},
 			"delete": {
 				"tags": ["Posts"],
 				"summary": "Delete a post",
 				"description": "Remove a post created by the authenticated user",
 				"operationId": "delete_post_posts__postId__delete",
-				"security": [{ "BearerAuth": [] }],
 				"parameters": [
 					{
 						"name": "postId",
@@ -505,7 +331,7 @@
 						}
 					},
 					"401": {
-						"description": "Unauthorized - Not your post or invalid token",
+						"description": "Unauthorized - Not your post or invalid session",
 						"content": {
 							"application/json": {
 								"schema": { "$ref": "#/components/schemas/ErrorResponse" }
@@ -535,7 +361,6 @@
 				"summary": "Update a post",
 				"description": "Modify content of a post created by the authenticated user",
 				"operationId": "update_post_posts__postId__put",
-				"security": [{ "BearerAuth": [] }],
 				"parameters": [
 					{
 						"name": "postId",
@@ -564,7 +389,7 @@
 						}
 					},
 					"401": {
-						"description": "Unauthorized - Not your post or invalid token",
+						"description": "Unauthorized - Not your post or invalid session",
 						"content": {
 							"application/json": {
 								"schema": { "$ref": "#/components/schemas/ErrorResponse" }
@@ -596,7 +421,6 @@
 				"summary": "Like a post",
 				"description": "Add the authenticated user's like to a post",
 				"operationId": "like_post_posts__postId__like_post",
-				"security": [{ "BearerAuth": [] }],
 				"parameters": [
 					{
 						"name": "postId",
@@ -646,7 +470,6 @@
 				"summary": "Unlike a post",
 				"description": "Remove the authenticated user's like from a post",
 				"operationId": "unlike_post_posts__postId__like_delete",
-				"security": [{ "BearerAuth": [] }],
 				"parameters": [
 					{
 						"name": "postId",
@@ -753,15 +576,13 @@
 							}
 						}
 					}
-				},
-				"security": [{ "BearerAuth": [] }]
+				}
 			},
 			"post": {
 				"tags": ["Posts"],
 				"summary": "Add a comment to a post",
 				"description": "Create a new comment on a specific post",
 				"operationId": "create_comment_posts__postId__comments_post",
-				"security": [{ "BearerAuth": [] }],
 				"parameters": [
 					{
 						"name": "postId",
@@ -822,7 +643,6 @@
 				"summary": "Delete a comment",
 				"description": "Remove a comment created by the authenticated user",
 				"operationId": "delete_comment_comments__commentId__delete",
-				"security": [{ "BearerAuth": [] }],
 				"parameters": [
 					{
 						"name": "commentId",
@@ -842,7 +662,7 @@
 						}
 					},
 					"401": {
-						"description": "Unauthorized - Not your comment or invalid token",
+						"description": "Unauthorized - Not your comment or invalid session",
 						"content": {
 							"application/json": {
 								"schema": { "$ref": "#/components/schemas/ErrorResponse" }
@@ -872,7 +692,6 @@
 				"summary": "Update a comment",
 				"description": "Modify content of a comment created by the authenticated user",
 				"operationId": "update_comment_comments__commentId__put",
-				"security": [{ "BearerAuth": [] }],
 				"parameters": [
 					{
 						"name": "commentId",
@@ -901,7 +720,7 @@
 						}
 					},
 					"401": {
-						"description": "Unauthorized - Not your comment or invalid token",
+						"description": "Unauthorized - Not your comment or invalid session",
 						"content": {
 							"application/json": {
 								"schema": { "$ref": "#/components/schemas/ErrorResponse" }
@@ -927,183 +746,6 @@
 				}
 			}
 		},
-		"/profile": {
-			"get": {
-				"tags": ["Profile"],
-				"summary": "Get authenticated user's profile",
-				"description": "Retrieve complete profile information for the authenticated user",
-				"operationId": "get_profile_profile_get",
-				"responses": {
-					"200": {
-						"description": "Profile retrieved successfully",
-						"content": {
-							"application/json": {
-								"schema": { "$ref": "#/components/schemas/UserProfile" }
-							}
-						}
-					},
-					"401": {
-						"description": "Unauthorized - Invalid or expired token",
-						"content": {
-							"application/json": {
-								"schema": { "$ref": "#/components/schemas/ErrorResponse" }
-							}
-						}
-					}
-				},
-				"security": [{ "BearerAuth": [] }]
-			}
-		},
-		"/profile/posts": {
-			"get": {
-				"tags": ["Profile"],
-				"summary": "Get posts by authenticated user",
-				"description": "Retrieve all posts created by the authenticated user",
-				"operationId": "get_my_posts_profile_posts_get",
-				"parameters": [
-					{
-						"name": "page",
-						"in": "query",
-						"description": "Page number for pagination (1-indexed)",
-						"schema": {
-							"type": "integer",
-							"default": 1,
-							"minimum": 1
-						}
-					},
-					{
-						"name": "limit",
-						"in": "query",
-						"description": "Number of items per page",
-						"schema": {
-							"type": "integer",
-							"default": 10,
-							"minimum": 1,
-							"maximum": 100
-						}
-					}
-				],
-				"responses": {
-					"200": {
-						"description": "Posts retrieved successfully",
-						"content": {
-							"application/json": {
-								"schema": { "$ref": "#/components/schemas/PostList" }
-							}
-						}
-					},
-					"401": {
-						"description": "Unauthorized - Invalid or expired token",
-						"content": {
-							"application/json": {
-								"schema": { "$ref": "#/components/schemas/ErrorResponse" }
-							}
-						}
-					}
-				},
-				"security": [{ "BearerAuth": [] }]
-			}
-		},
-		"/profile/followers": {
-			"get": {
-				"tags": ["Profile"],
-				"summary": "Get authenticated user's followers",
-				"description": "Retrieve list of users following the authenticated user",
-				"operationId": "get_followers_profile_followers_get",
-				"parameters": [
-					{
-						"name": "page",
-						"in": "query",
-						"description": "Page number for pagination (1-indexed)",
-						"schema": {
-							"type": "integer",
-							"default": 1,
-							"minimum": 1
-						}
-					},
-					{
-						"name": "limit",
-						"in": "query",
-						"description": "Number of items per page",
-						"schema": {
-							"type": "integer",
-							"default": 10,
-							"minimum": 1,
-							"maximum": 100
-						}
-					}
-				],
-				"responses": {
-					"200": {
-						"description": "Followers retrieved successfully",
-						"content": {
-							"application/json": {
-								"schema": { "$ref": "#/components/schemas/UserList" }
-							}
-						}
-					},
-					"401": {
-						"description": "Unauthorized - Invalid or expired token",
-						"content": {
-							"application/json": {
-								"schema": { "$ref": "#/components/schemas/ErrorResponse" }
-							}
-						}
-					}
-				},
-				"security": [{ "BearerAuth": [] }]
-			}
-		},
-		"/profile/following": {
-			"get": {
-				"tags": ["Profile"],
-				"summary": "Get users followed by authenticated user",
-				"description": "Retrieve list of users the authenticated user is following",
-				"operationId": "get_following_profile_following_get",
-				"parameters": [
-					{
-						"name": "page",
-						"in": "query",
-						"description": "Page number for pagination (1-indexed)",
-						"schema": {
-							"type": "integer",
-							"default": 1,
-							"minimum": 1
-						}
-					},
-					{
-						"name": "limit",
-						"in": "query",
-						"description": "Number of items per page",
-						"schema": {
-							"type": "integer",
-							"default": 10,
-							"minimum": 1,
-							"maximum": 100
-						}
-					}
-				],
-				"responses": {
-					"200": {
-						"description": "Following list retrieved successfully",
-						"content": {
-							"application/json": {
-								"schema": { "$ref": "#/components/schemas/UserList" }
-							}
-						}
-					},
-					"401": {
-						"description": "Unauthorized - Invalid or expired token",
-						"content": {
-							"application/json": {
-								"schema": { "$ref": "#/components/schemas/ErrorResponse" }
-							}
-						}
-					}
-				},
-				"security": [{ "BearerAuth": [] }]
-			}
-		},
 		"/": {
 			"get": {
 				"tags": ["System"],
@@ -1125,25 +767,6 @@
 	},
 	"components": {
 		"schemas": {
-			"UserUpdate": {
-				"properties": {
-					"username": {
-						"type": "string",
-						"title": "Username",
-						"description": "New username",
-						"minLength": 3,
-						"maxLength": 30
-					},
-					"profile_image": {
-						"type": "string",
-						"format": "binary",
-						"title": "Profile Image",
-						"description": "User profile picture"
-					}
-				},
-				"type": "object",
-				"title": "UserUpdate"
-			},
 			"CommentCreate": {
 				"properties": {
 					"content": {
@@ -1152,10 +775,15 @@
 						"description": "Text content of the comment",
 						"minLength": 1,
 						"maxLength": 300
+					},
+					"username": {
+						"type": "string",
+						"title": "Username",
+						"description": "Username of the comment author (from localStorage)"
 					}
 				},
 				"type": "object",
-				"required": ["content"],
+				"required": ["content", "username"],
 				"title": "CommentCreate"
 			},
 			"CommentUpdate": {
@@ -1193,10 +821,15 @@
 						"description": "Text content of the post",
 						"minLength": 1,
 						"maxLength": 500
+					},
+					"username": {
+						"type": "string",
+						"title": "Username",
+						"description": "Username of the post author (from localStorage)"
 					}
 				},
 				"type": "object",
-				"required": ["content"],
+				"required": ["content", "username"],
 				"title": "PostCreate"
 			},
 			"PostUpdate": {
@@ -1213,71 +846,18 @@
 				"required": ["content"],
 				"title": "PostUpdate"
 			},
-			"Token": {
-				"properties": {
-					"access_token": {
-						"type": "string",
-						"title": "Access Token",
-						"description": "JWT token for API authentication"
-					},
-					"refresh_token": {
-						"type": "string",
-						"title": "Refresh Token",
-						"description": "Token for refreshing the access token"
-					},
-					"token_type": {
-						"type": "string",
-						"title": "Token Type",
-						"description": "Type of token (usually 'bearer')",
-						"default": "bearer"
-					}
-				},
-				"type": "object",
-				"required": ["access_token", "refresh_token", "token_type"],
-				"title": "Token",
-				"description": "Authentication token response"
-			},
-			"UserCreate": {
-				"properties": {
-					"username": {
-						"type": "string",
-						"title": "Username",
-						"description": "Unique username for the account",
-						"minLength": 3,
-						"maxLength": 30
-					},
-					"password": {
-						"type": "string",
-						"title": "Password",
-						"description": "Account password",
-						"minLength": 6,
-						"maxLength": 100,
-						"format": "password"
-					}
-				},
-				"type": "object",
-				"required": ["username", "password"],
-				"title": "UserCreate",
-				"description": "User registration data"
-			},
-			"UserLogin": {
+			"UserLoginSimple": {
 				"properties": {
 					"username": {
 						"type": "string",
 						"title": "Username",
 						"description": "Username for authentication"
-					},
-					"password": {
-						"type": "string",
-						"title": "Password",
-						"description": "Account password",
-						"format": "password"
 					}
 				},
 				"type": "object",
-				"required": ["username", "password"],
-				"title": "UserLogin",
-				"description": "User login credentials"
+				"required": ["username"],
+				"title": "UserLoginSimple",
+				"description": "User login credentials (simplified)"
 			},
 			"ValidationError": {
 				"properties": {
@@ -1331,27 +911,6 @@
 				"title": "SuccessResponse",
 				"description": "Standard success response format"
 			},
-			"UserResponse": {
-				"type": "object",
-				"properties": {
-					"id": {
-						"type": "integer",
-						"description": "User ID"
-					},
-					"username": {
-						"type": "string",
-						"description": "Username"
-					},
-					"created_at": {
-						"type": "string",
-						"format": "date-time",
-						"description": "Account creation timestamp"
-					}
-				},
-				"required": ["id", "username", "created_at"],
-				"title": "UserResponse",
-				"description": "Basic user information"
-			},
 			"UserProfile": {
 				"type": "object",
 				"properties": {
@@ -1368,21 +927,23 @@
 						"format": "uri",
 						"description": "URL to user's profile image"
 					},
-					"followers_count": {
-						"type": "integer",
-						"description": "Number of followers"
-					},
-					"following_count": {
-						"type": "integer",
-						"description": "Number of users this user follows"
-					},
 					"posts_count": {
 						"type": "integer",
 						"description": "Number of posts"
 					},
-					"is_following": {
-						"type": "boolean",
-						"description": "Whether the authenticated user is following this user"
+					"posts": {
+						"type": "array",
+						"items": {
+							"$ref": "#/components/schemas/PostDetail"
+						},
+						"description": "List of user's posts"
+					},
+					"comments": {
+						"type": "array",
+						"items": {
+							"$ref": "#/components/schemas/Comment"
+						},
+						"description": "List of user's comments"
 					},
 					"created_at": {
 						"type": "string",
@@ -1398,29 +959,13 @@
 				"required": [
 					"id",
 					"username",
-					"followers_count",
-					"following_count",
 					"posts_count",
+					"posts",
+					"comments",
 					"created_at"
 				],
 				"title": "UserProfile",
-				"description": "Detailed user profile information"
-			},
-			"FollowResponse": {
-				"type": "object",
-				"properties": {
-					"user_id": {
-						"type": "integer",
-						"description": "Target user ID"
-					},
-					"is_following": {
-						"type": "boolean",
-						"description": "Whether the authenticated user is following the target user"
-					}
-				},
-				"required": ["user_id", "is_following"],
-				"title": "FollowResponse",
-				"description": "Follow/unfollow operation result"
+				"description": "Detailed user profile information including posts and comments"
 			},
 			"PostDetail": {
 				"type": "object",
@@ -1463,7 +1008,7 @@
 					},
 					"is_liked": {
 						"type": "boolean",
-						"description": "Whether the authenticated user has liked this post"
+						"description": "Whether the authenticated user has liked this post. Can be false for newly created posts."
 					},
 					"created_at": {
 						"type": "string",
@@ -1625,13 +1170,29 @@
 					"items": {
 						"type": "array",
 						"items": {
-							"$ref": "#/components/schemas/UserProfile"
+							"type": "object",
+							"properties": {
+								"id": {
+									"type": "integer",
+									"description": "User ID"
+								},
+								"username": {
+									"type": "string",
+									"description": "Username"
+								},
+								"profile_image_url": {
+									"type": "string",
+									"format": "uri",
+									"description": "URL to user's profile image"
+								}
+							},
+							"required": ["id", "username"]
 						},
-						"description": "List of user profiles"
+						"description": "List of users matching the search query"
 					},
 					"total": {
 						"type": "integer",
-						"description": "Total number of users"
+						"description": "Total number of users matching the query"
 					},
 					"page": {
 						"type": "integer",
@@ -1666,14 +1227,6 @@
 				"required": ["status", "version"],
 				"title": "HealthCheckResponse",
 				"description": "API health check response"
-			}
-		},
-		"securitySchemes": {
-			"BearerAuth": {
-				"type": "http",
-				"scheme": "bearer",
-				"bearerFormat": "JWT",
-				"description": "JWT authentication token obtained from the /auth/login endpoint"
 			}
 		}
 	}
