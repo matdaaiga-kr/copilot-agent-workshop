@@ -53,19 +53,45 @@
 1. 구현하고 싶은 프레임을 선택하여 `오른쪽 클릭` - `Copy/Paste as` - `Copy link to selection`을 눌러 복사합니다.
    ![screenshot](./img/step00_figma_copy.png)
 
-1. 복사한 링크를 프롬프트에서 아래와 같이 사용합니다.
+1. 복사한 링크는 아래와 같이 프롬프트에서 사용됩니다.
    ```markdown
-   리액트로 [로그인 화면]({YOUR_FIGMA_LINK})을 구현해줘.
+   리액트로 [홈 화면]({YOUR_FIGMA_LINK})을 구현해줘.
    ```
 
 > 위와 같이 `[텍스트](링크)` 형태로 프롬프트를 작성하는 것은 마크다운의 링크 삽입 문법입니다. 대괄호 내부의 텍스트를 클릭하면 소괄호의 링크로 연결됩니다. 프롬프트를 입력할 때 마크다운 형식으로 프롬프트를 작성한다면 더 좋은 결과를 얻을 수 있습니다. 
 
-## 프롬프트 입력
+## 시작 프로젝트 복사
 
-1. 터미널에 아래 명령어를 입력합니다. 
+1. 아래 명령어를 입력해 실습 디렉토리를 만들고 시작 프로젝트를 복사합니다.
+
+   > ⚠️ 주의 : 자신이 사용 중인 터미널 종류에 따라 다음 두 명령어 중 하나를 입력합니다.
+
    ```bash
-   cd save-points/client
+   # Bash/Zsh
+   mkdir -p $REPOSITORY_ROOT/frontend && \
+      cp -a $REPOSITORY_ROOT/save-points/frontend/. $REPOSITORY_ROOT/frontend/ && \
+      cp $REPOSITORY_ROOT/save-points/openapi.json $REPOSITORY_ROOT/frontend/
    ```
+
+   ```powershell
+   # PowerShell
+   New-Item -Type Directory -Path $REPOSITORY_ROOT/frontend -Force && `
+      Copy-Item -Path $REPOSITORY_ROOT/save-points/frontend/* -Destination $REPOSITORY_ROOT/frontend -Recurse -Force && `
+      Copy-Item -Path $REPOSITORY_ROOT/save-points/openapi.json -Destination $REPOSITORY_ROOT/frontend -Force
+   ```
+
+2. 프론트엔드 프로젝트로 이동합니다.
+   ```bash
+   cd $REPOSITORY_ROOT/frontend
+   ```
+3. 다음 명령어를 이용해 Visual Studio Code 창을 하나 더 열어줍니다.
+   ```bash
+   code .
+   ```
+4. 새롭게 열린 Visual Studio Code 화면은 다음과 같이 `frontend` 폴더가 루트 디렉토리에 위치해 있습니다.
+   ![new window](./img/step01_new_window.png)
+
+## 프롬프트 입력
 
 1. 아래와 같이 프롬프트를 입력합니다. 
    ```text
@@ -77,13 +103,13 @@
    `openapi.json` 파일의 API 문서를 바탕으로 [{기능명}]({Figma 링크}) 기능을 구현해줘.
    ```
 
-> 앱 전체를 프롬프트로 입력하는 것 보다, 기능별로(로그인 화면, 홈 화면, 프로필 화면 등) 명령하는 것이 더 고품질의 결과물을 얻을 수 있습니다.
+> 앱 전체를 프롬프트로 입력하는 것 보다, 기능별로(홈 화면, 검색 화면 등) 명령하는 것이 더 고품질의 결과물을 얻을 수 있습니다.
 
 # 번외) 완성된 버전의 백엔드 프로젝트를 실행해보고 싶다면?
 
 1. 아래 명령어를 터미널에 입력합니다.
    ```bash
-   cd $REPOSITORY_ROOT/complete/client
+   cd $REPOSITORY_ROOT/complete/frontend
    ```
 1. 아래 명령어를 터미널에 입력하여 서버를 실행합니다.
 
