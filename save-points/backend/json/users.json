@@ -1,0 +1,47 @@
+{
+	"paths": {
+		"/users/{userId}": {
+			"get": {
+				"tags": ["Users"],
+				"summary": "Get user profile by ID",
+				"description": "Retrieve public profile information for a specific user",
+				"operationId": "get_user_profile_users__userId__get",
+				"parameters": [
+					{
+						"name": "userId",
+						"in": "path",
+						"required": true,
+						"description": "ID of the user to retrieve",
+						"schema": { "type": "integer", "title": "User ID" }
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "User profile retrieved successfully",
+						"content": {
+							"application/json": {
+								"schema": { "$ref": "#/components/schemas/UserProfile" }
+							}
+						}
+					},
+					"404": {
+						"description": "Not Found - User does not exist",
+						"content": {
+							"application/json": {
+								"schema": { "$ref": "#/components/schemas/ErrorResponse" }
+							}
+						}
+					},
+					"422": {
+						"description": "Validation Error",
+						"content": {
+							"application/json": {
+								"schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+}

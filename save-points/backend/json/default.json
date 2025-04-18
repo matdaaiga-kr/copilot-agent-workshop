@@ -1,0 +1,22 @@
+{
+	"paths": {
+		"/": {
+			"get": {
+				"tags": ["System"],
+				"summary": "API health check endpoint",
+				"description": "Check if the API is running properly",
+				"operationId": "root__get",
+				"responses": {
+					"200": {
+						"description": "API is operational",
+						"content": {
+							"application/json": {
+								"schema": { "$ref": "#/components/schemas/HealthCheckResponse" }
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+}
