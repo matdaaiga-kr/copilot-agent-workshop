@@ -3,6 +3,7 @@
 ## 사전 준비 사항
 
 - [Visual Studio Code](https://code.visualstudio.com/) 설치
+- [Node.js](https://nodejs.org/ko/download) 설치 (18.18.0 이상)
 
 ## Visual Studio Code 설치 확인
 
