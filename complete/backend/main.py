@@ -21,7 +21,7 @@ app = FastAPI(
 # CORS 미들웨어 설정
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],  # 실제 배포 환경에서는 특정 오리진으로 제한해야 함
+    allow_origins=["*", "http://localhost:3000", "http://127.0.0.1:3000"],  # 실제 배포 환경에서는 특정 오리진으로 제한해야 함
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
