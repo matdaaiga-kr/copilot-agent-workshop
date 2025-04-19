@@ -1,0 +1,62 @@
+{
+	"name": "GitHub Copilot Agent Mode Workshop",
+
+	"image": "mcr.microsoft.com/devcontainers/python:3.12",
+
+	"features": {
+		"ghcr.io/devcontainers/features/node:latest": {
+			"version": "lts"
+		},
+		"ghcr.io/devcontainers/features/github-cli:latest": {},
+		"ghcr.io/devcontainers/features/docker-in-docker": {},
+		"ghcr.io/devcontainers/features/common-utils:latest": {}
+	},
+
+	"customizations": {
+		"vscode": {
+			"extensions": [
+				"EditorConfig.EditorConfig",
+				"GitHub.copilot",
+				"GitHub.copilot-chat",
+				"GitHub.vscode-github-actions",
+				"GitHub.vscode-pull-request-github",
+				"ms-azuretools.vscode-docker",
+				"ms-python.python",
+				"ms-python.vscode-pylance",
+				"dbaeumer.vscode-eslint",
+				"esbenp.prettier-vscode",
+				"redhat.vscode-yaml"
+			],
+			"settings": {
+				"python.defaultInterpreterPath": "/usr/local/bin/python",
+				"python.linting.enabled": true,
+				"python.linting.pylintEnabled": true,
+				"python.formatting.provider": "autopep8",
+				"editor.formatOnSave": true,
+				"editor.codeActionsOnSave": {
+					"source.fixAll.eslint": true
+				}
+			}
+		}
+	},
+
+	"remoteUser": "vscode",
+
+	"postCreateCommand": "pip install -r complete/backend/requirements.txt && cd complete/frontend && npm install",
+
+	"forwardPorts": [8000, 3000],
+	"portsAttributes": {
+		"8000": {
+			"label": "Backend API",
+			"onAutoForward": "notify"
+		},
+		"3000": {
+			"label": "Frontend App",
+			"onAutoForward": "notify"
+		}
+	},
+
+	"hostRequirements": {
+		"memory": "8gb"
+	}
+}
