@@ -428,6 +428,13 @@
 						"required": true,
 						"description": "ID of the post to like",
 						"schema": { "type": "integer", "title": "Post ID" }
+					},
+					{
+						"name": "username",
+						"in": "header",
+						"required": true,
+						"description": "Username for authentication",
+						"schema": { "type": "string" }
 					}
 				],
 				"responses": {
@@ -477,6 +484,13 @@
 						"required": true,
 						"description": "ID of the post to unlike",
 						"schema": { "type": "integer", "title": "Post ID" }
+					},
+					{
+						"name": "username",
+						"in": "header",
+						"required": true,
+						"description": "Username for authentication",
+						"schema": { "type": "string" }
 					}
 				],
 				"responses": {
@@ -590,6 +604,13 @@
 						"required": true,
 						"description": "ID of the post to comment on",
 						"schema": { "type": "integer", "title": "Post ID" }
+					},
+					{
+						"name": "username",
+						"in": "header",
+						"required": true,
+						"description": "Username for authentication",
+						"schema": { "type": "string" }
 					}
 				],
 				"requestBody": {
@@ -650,6 +671,13 @@
 						"required": true,
 						"description": "ID of the comment to delete",
 						"schema": { "type": "integer", "title": "Comment ID" }
+					},
+					{
+						"name": "username",
+						"in": "header",
+						"required": true,
+						"description": "Username for authentication",
+						"schema": { "type": "string" }
 					}
 				],
 				"responses": {
@@ -699,6 +727,13 @@
 						"required": true,
 						"description": "ID of the comment to update",
 						"schema": { "type": "integer", "title": "Comment ID" }
+					},
+					{
+						"name": "username",
+						"in": "header",
+						"required": true,
+						"description": "Username for authentication",
+						"schema": { "type": "string" }
 					}
 				],
 				"requestBody": {
