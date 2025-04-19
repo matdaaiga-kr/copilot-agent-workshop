@@ -81,7 +81,7 @@
    Get-Command python
    ```
 
-   > 🥕 `python`을 실행시킬 수 있는 경로가 보이지 않는다면 설치하지 않은 것입니다. 만약 설치하지 않았다면 [python 설치 페이지](https://www.python.org/downloads/)에서 최신 버전을 다운로드 받아 설치합니다.
+   > 🥕 팁 : `python`을 실행시킬 수 있는 경로가 보이지 않는다면 설치하지 않은 것입니다. 만약 설치하지 않았다면 [python 설치 페이지](https://www.python.org/downloads/)에서 최신 버전을 다운로드 받아 설치합니다.
 
 ## Visual Studio Code 설치 확인
 
