@@ -16,6 +16,12 @@ GitHub Copilot의 agent mode를 이용해서 SNS 서비스를 만드는 워크�
 - [Visual Studio Code](https://code.visualstudio.com/) 설치
 - [Docker Desktop](https://docs.docker.com/get-started/introduction/get-docker-desktop/) 설치
 
+## GitHub Codespaces로 시작하기
+
+위 이미지를 따라 차례로 `[<> Code]` 👉 `[Codespaces]` 👉 `[Create codespace on main]`를 클릭해서 GitHub Codespaces 인스턴스를 생성합니다. 네트워크 사정에 따라 대략 5분-10분 정도 걸립니다.
+
+GitHub Codespaces 인스턴스가 만들어지면 [STEP 01 GitHub Copilot만으로 SNS 웹앱 만들기(Backend - Python)](./docs/backend/README.md)  섹션으로 이동합니다.
+
 ## 워크샵 진행 방법
 
 아래 단계별로 워크샵을 진행합니다.
