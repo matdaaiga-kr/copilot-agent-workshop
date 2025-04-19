@@ -10,9 +10,10 @@ GitHub Copilot의 agent mode를 이용해서 SNS 서비스를 만드는 워크�
 ## 워크샵 사전 준비사항
 
 - [git CLI](https://git-scm.com/downloads) 설치
-- [Visual Studio Code](https://code.visualstudio.com/) 설치
-- [Docker Desktop](https://docs.docker.com/get-started/introduction/get-docker-desktop/) 설치
+- [GitHub CLI](https://cli.github.com/) 설치
+- [Python](https://www.python.org/) 설치
 - [Node.js](https://nodejs.org/ko) 설치
+- [Visual Studio Code](https://code.visualstudio.com/) 설치
 - [Docker Desktop](https://docs.docker.com/get-started/introduction/get-docker-desktop/) 설치
 
 ## 워크샵 진행 방법
