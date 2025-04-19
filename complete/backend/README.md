@@ -67,6 +67,28 @@ uvicorn main:app --host 0.0.0.0 --port 8000 --reload
 - Swagger UI: `http://localhost:8000/docs`
 - ReDoc: `http://localhost:8000/redoc`
 
+## Docker를 사용한 실행 방법
+
+### Docker 실행 (한 번에 처리)
+
+```bash
+docker run -d -p 8000:8000 -v $(pwd)/threads_app.db:/app/threads_app.db --name threads-backend devnerdy/threads-backend:latest
+```
+
+### 개별 실행 방법 (선택 사항)
+
+이미지만 가져오기:
+
+```bash
+docker pull devnerdy/threads-backend:latest
+```
+
+볼륨 마운트 없이 실행:
+
+```bash
+docker run -d -p 8000:8000 --name threads-backend devnerdy/threads-backend:latest
+```
+
 ## API 구조
 
 이 애플리케이션은 다음과 같은 주요 엔드포인트를 제공합니다:

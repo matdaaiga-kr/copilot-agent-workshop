@@ -98,4 +98,8 @@
    DEBUG=True
    ```
 
-4. [complete/backend/README.md](/complete/backend/README.md) 파일의 `실행 방법` 섹션에 따라 명령어를 입력해 프로젝트를 실행합니다.
+4. [complete/backend/README.md](/complete/backend/README.md) 파일의 `애플리케이션 실행 방법` 섹션에 따라 명령어를 입력해 프로젝트를 실행합니다.
+
+---
+
+수고하셨습니다!! **백엔드 API 개발** 부분이 끝났습니다. 이제 [STEP 03 : 도커로 어디서나 실행 가능한 워크샵 환경 만들기](./step-03.md) 단계로 넘어가겠습니다.
