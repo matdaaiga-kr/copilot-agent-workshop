@@ -28,28 +28,18 @@
 
    ```bash
    # Bash/Zsh
-   mkdir -p $REPOSITORY_ROOT/backend && \
-      cp -a $REPOSITORY_ROOT/save-points/backend/. $REPOSITORY_ROOT/backend/ && \
-      cp $REPOSITORY_ROOT/save-points/openapi.json $REPOSITORY_ROOT/backend/
+   mkdir -p $REPOSITORY_ROOT/backend
    ```
 
    ```powershell
    # PowerShell
-   New-Item -Type Directory -Path $REPOSITORY_ROOT/backend -Force && `
-      Copy-Item -Path $REPOSITORY_ROOT/save-points/backend/* -Destination $REPOSITORY_ROOT/backend -Recurse -Force && `
-      Copy-Item -Path $REPOSITORY_ROOT/save-points/openapi.json -Destination $REPOSITORY_ROOT/backend -Force
+   New-Item -Type Directory -Path $REPOSITORY_ROOT/backend -Force
    ```
 
 2. 백엔드 프로젝트로 이동합니다.
    ```bash
    cd $REPOSITORY_ROOT/backend
    ```
-3. 다음 명령어를 이용해 Visual Studio Code 창을 하나 더 열어줍니다.
-   ```bash
-   code .
-   ```
-4. 새롭게 열린 Visual Studio Code 화면은 다음과 같이 `backend` 폴더가 루트 디렉토리에 위치해 있습니다.
-   ![new window](./img/step01-new-window.png)
 
 ---
 

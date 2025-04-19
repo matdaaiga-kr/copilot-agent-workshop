@@ -1,5 +1,14 @@
 # 개발 환경 설정
 
+## GitHub Codespaces를 사용 할 생각이라면?
+
+![step00-codespaces](./img/step00-codespaces.png)
+위 이미지를 따라 차례로 `[<> Code]` 👉 `[Codespaces]` 👉 `[Create codespace on main]`를 클릭해서 GitHub Codespaces 인스턴스를 생성합니다. 네트워크 사정에 따라 대략 5분-10분 정도 걸립니다.
+
+🎉 GitHub Codespaces를 사용하면 개발 환경이 모두 준비되어 있습니다!! 아래 내용은 건너뛰고 곧바로 [STEP 01 : 프롬프트 입력을 위한 기본 설정](./step-01.md) 단계로 넘어가면 됩니다.
+
+> ⚠️ 주의 : Visual Studio Code를 사용한다면, 아래 과정들을 모두 수행해야 합니다.
+
 ## 사전 준비 사항
 
 - [git CLI](https://git-scm.com/downloads) 설치
@@ -108,8 +117,6 @@
 
    `27.4.0` 이상의 버전이 있어야 합니다. 만약 이보다 버전이 낮다면 [Docker Desktop 설치 페이지](https://docs.docker.com/get-started/introduction/get-docker-desktop/)에서 최신 버전을 다운로드 받아 설치합니다.
 
-3. 도커 데스크탑에서 **회원가입 및 로그인**을 합니다.
-
 ## Visual Studio Code 설치 확인
 
 1. 터미널에서 아래 명령어를 실행시켜 현재 Visual Studio Code를 설치했는지 확인합니다.
@@ -194,4 +201,4 @@
 
 ---
 
-수고하셨습니다!! **개발 환경 설정** 부분이 끝났습니다. 이제 [STEP 01 : 프롬프트 입력을 위한 기본 설정](./step-01.md) 단계로 넘어가겠습니다.
+🎉 수고하셨습니다!! **개발 환경 설정** 부분이 끝났습니다. 이제 [STEP 01 : 프롬프트 입력을 위한 기본 설정](./step-01.md) 단계로 넘어가겠습니다.
