@@ -23,7 +23,7 @@ GitHub Copilot의 agent mode를 이용해서 SNS 서비스를 만드는 워크�
 | ----------------------------------------------------------------- | ------------------------------------------------------ |
 | [STEP 00](https://github.com/matdaaiga-kr/copilot-agent-workshop) | GitHub Copilot이란 무엇일까?                           |
 | [STEP 01](./docs/backend/README.md)                               | GitHub Copilot만으로 SNS 웹앱 만들기(Backend - Python) |
-| [STEP 02](./docs/client/README.md)                                | GitHub Copilot만으로 SNS 웹앱 만들기(Frontend - React) |
+| [STEP 02](./docs/frontend/README.md)                                | GitHub Copilot만으로 SNS 웹앱 만들기(Frontend - React) |
 
 ## 추가 참고 자료
 

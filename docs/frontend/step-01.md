@@ -39,7 +39,7 @@
    ![screenshot](./img/step00_api_key.png)
 
 1. `도구 선택` 버튼에 두 개의 도구가 추가된 것을 확인합니다. <br/>
-   ![screenshot](./step00_new_tools.png)
+   ![screenshot](./img/step00_new_tools.png)
 
 이제 개발환경 설정이 완료되었습니다!
 
@@ -109,8 +109,9 @@
 
 1. 아래 명령어를 터미널에 입력합니다.
    ```bash
-   cd $REPOSITORY_ROOT/complete/frontend
+   cd $REPOSITORY_ROOT/complete/frontend && npm install
    ```
+   
 1. 아래 명령어를 터미널에 입력하여 서버를 실행합니다.
 
    ```bash
