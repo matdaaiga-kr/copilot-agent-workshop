@@ -1,71 +1,73 @@
 # Threads-like 애플리케이션 백엔드
 
-FastAPI를 활용한 Threads와 유사한 소셜 미디어 애플리케이션의 백엔드 API입니다.
+이 프로젝트는 Threads와 유사한 소셜 미디어 애플리케이션의 백엔드 API를 제공합니다.
 
 ## 기술 스택
 
 - **FastAPI**: 고성능 웹 프레임워크
+- **SQLAlchemy**: SQL 툴킷 및 ORM
 - **SQLite**: 데이터베이스
-- **SQLAlchemy**: ORM(Object-Relational Mapping)
-- **Pydantic**: 데이터 유효성 검사
-- **Uvicorn**: ASGI 서버
+- **Pydantic**: 데이터 검증 및 설정 관리
 
-## 요구사항
+## 설치 및 실행 방법
 
-해당 애플리케이션 실행을 위해 다음 패키지가 필요합니다:
+### 1. 가상 환경 설정
 
-```
-fastapi==0.105.0
-uvicorn==0.24.0
-pydantic==2.4.2
-pydantic-settings==2.0.3
-sqlalchemy==2.0.23
-python-dotenv==1.0.0
-aiosqlite==0.19.0
-```
+먼저, 가상 환경을 생성하고 활성화합니다:
 
-## 애플리케이션 실행 방법
+```bash
+# 가상 환경 생성
+python -m venv venv
 
-### 1. 환경 설정
+# 가상 환경 활성화 (맥OS/Linux)
+source venv/bin/activate
 
-프로젝트 루트 디렉토리에 `.env` 파일이 있는지 확인합니다. 없다면 다음과 같은 내용으로 생성합니다:
-
-```
-DATABASE_URL=sqlite:///./threads_app.db
-API_VERSION=0.1.0
-DEBUG=True
+# 가상 환경 활성화 (Windows)
+venv\Scripts\activate
 ```
 
 ### 2. 필요한 패키지 설치
 
-프로젝트 루트 디렉토리에서 아래 명령어를 실행하여 필요한 패키지를 설치합니다:
+가상 환경이 활성화된 상태에서 필요한 패키지를 설치합니다:
 
 ```bash
 pip install -r requirements.txt
 ```
 
-### 3. 애플리케이션 실행
+### 3. 환경 변수 설정
 
-아래 명령어로 애플리케이션을 실행합니다:
+`.env` 파일을 생성하고 다음 내용을 추가합니다:
+
+```plaintext
+DATABASE_URL=sqlite:///./threads_app.db
+API_VERSION=0.1.0
+DEBUG=True
+```
+
+### 4. 애플리케이션 실행
+
+다음 명령어로 애플리케이션을 실행합니다:
 
 ```bash
+# Python으로 직접 실행
 python main.py
+
+# 또는 uvicorn으로 직접 실행
+uvicorn main:app --reload --host 0.0.0.0 --port 8000
 ```
 
-또는 uvicorn을 직접 사용할 수도 있습니다:
+애플리케이션이 실행되면 다음 주소로 접속할 수 있습니다:
+
+- API 문서: http://localhost:8000/docs 또는 http://127.0.0.1:8000/docs
+- ReDoc 문서: http://localhost:8000/redoc 또는 http://127.0.0.1:8000/redoc
+
+### 5. 가상 환경 비활성화
+
+작업을 마친 후에는 가상 환경을 비활성화할 수 있습니다:
 
 ```bash
-uvicorn main:app --host 0.0.0.0 --port 8000 --reload
+deactivate
 ```
-
-`--reload` 옵션은 코드 변경 시 서버가 자동으로 재시작되게 합니다. 개발 환경에서만 사용하세요.
-
-### 4. API 문서 확인
-
-애플리케이션이 실행되면 다음 URL에서 자동 생성된 API 문서를 확인할 수 있습니다:
-
-- Swagger UI: `http://localhost:8000/docs`
-- ReDoc: `http://localhost:8000/redoc`
 
 ## Docker를 사용한 실행 방법
 
@@ -89,16 +91,36 @@ docker pull devnerdy/threads-backend:latest
 docker run -d -p 8000:8000 --name threads-backend devnerdy/threads-backend:latest
 ```
 
-## API 구조
+## API 개요
 
-이 애플리케이션은 다음과 같은 주요 엔드포인트를 제공합니다:
+이 API는 다음과 같은 기능을 제공합니다:
 
-- **인증**: 사용자 로그인 및 인증
-- **게시글**: 게시글 생성, 조회, 수정, 삭제
-- **댓글**: 게시글에 댓글 작성, 수정, 삭제
-- **좋아요**: 게시글에 좋아요 추가/제거
-- **사용자 검색**: 사용자명으로 검색
-- **프로필 조회**: 사용자 프로필 정보 조회
+- 사용자 로그인 및 프로필 관리
+- 게시물 생성, 조회, 수정, 삭제
+- 댓글 작성 및 관리
+- 게시물 좋아요 기능
+- 사용자 검색 기능
+
+## API 엔드포인트
+
+주요 엔드포인트는 다음과 같습니다:
+
+- `/login`: 사용자 로그인
+- `/users/{userId}`: 사용자 프로필 조회
+- `/search`: 사용자 검색
+- `/posts`: 게시물 목록 조회 및 새 게시물 생성
+- `/posts/{postId}`: 게시물 상세 조회, 수정, 삭제
+- `/posts/{postId}/like`: 게시물 좋아요/좋아요 취소
+- `/posts/{postId}/comments`: 게시물 댓글 목록 조회 및 새 댓글 작성
+- `/comments/{commentId}`: 댓글 수정 및 삭제
+- `/`: 헬스 체크 엔드포인트
+
+## 프론트엔드 연결
+
+이 백엔드 API는 다음 주소에서 실행되는 프론트엔드 애플리케이션과 연결하도록 CORS 설정이 되어 있습니다:
+
+- http://localhost:3000
+- http://127.0.0.1:3000
 
 ## 프로젝트 구조
 

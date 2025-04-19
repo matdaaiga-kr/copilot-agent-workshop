@@ -15,25 +15,19 @@ router = APIRouter(
     tags=["Posts"]
 )
 
-def get_username_from_header(x_username: Optional[str] = Header(None)) -> Optional[str]:
-    """
-    헤더에서 사용자명을 추출
-    (실제 토큰 인증 대신 간단한 사용자명 기반 인증 사용)
-    """
-    return x_username
-
 @router.get("", response_model=PostList)
 def get_posts_list(
     page: int = Query(1, description="페이지 번호 (1-indexed)", ge=1),
     limit: int = Query(10, description="페이지당 항목 수", ge=1, le=100),
-    db: Session = Depends(get_db),
-    username: Optional[str] = Depends(get_username_from_header)
+    username: Optional[str] = Query(None, description="현재 로그인한 사용자명 (선택사항)"),
+    db: Session = Depends(get_db)
 ):
     """
     게시글 목록을 가져옵니다.
     
     - **page**: 페이지 번호 (1부터 시작)
     - **limit**: 페이지당 게시글 수
+    - **username**: 현재 로그인한 사용자명 (선택사항)
     """
     skip = (page - 1) * limit
     posts, total, pages = post_service.get_posts(db, skip=skip, limit=limit, current_username=username)
@@ -62,13 +56,14 @@ def create_post(
 @router.get("/{postId}", response_model=PostDetail)
 def get_post_detail(
     postId: int = Path(..., description="조회할 게시글 ID"),
-    db: Session = Depends(get_db),
-    username: Optional[str] = Depends(get_username_from_header)
+    username: Optional[str] = Query(None, description="현재 로그인한 사용자명 (선택사항)"),
+    db: Session = Depends(get_db)
 ):
     """
     특정 게시글의 상세 정보를 가져옵니다.
     
     - **postId**: 조회할 게시글 ID
+    - **username**: 현재 로그인한 사용자명 (선택사항)
     """
     post = post_service.get_post(db, post_id=postId, current_username=username)
     if not post:
@@ -82,14 +77,15 @@ def get_post_detail(
 def update_post(
     postId: int = Path(..., description="수정할 게시글 ID"),
     post_update: PostUpdate = ...,
-    db: Session = Depends(get_db),
-    username: Optional[str] = Depends(get_username_from_header)
+    username: str = Query(..., description="작성자 사용자명"), 
+    db: Session = Depends(get_db)
 ):
     """
     게시글을 수정합니다.
     
     - **postId**: 수정할 게시글 ID
     - **content**: 새 게시글 내용
+    - **username**: 작성자 사용자명 (쿼리 파라미터)
     """
     if not username:
         raise HTTPException(
@@ -108,13 +104,14 @@ def update_post(
 @router.delete("/{postId}", response_model=SuccessResponse)
 def delete_post(
     postId: int = Path(..., description="삭제할 게시글 ID"),
-    db: Session = Depends(get_db),
-    username: Optional[str] = Depends(get_username_from_header)
+    username: str = Query(..., description="작성자 사용자명"),
+    db: Session = Depends(get_db)
 ):
     """
     게시글을 삭제합니다.
     
     - **postId**: 삭제할 게시글 ID
+    - **username**: 작성자 사용자명 (쿼리 파라미터)
     """
     if not username:
         raise HTTPException(
@@ -134,13 +131,14 @@ def delete_post(
 @router.post("/{postId}/like", response_model=LikeResponse)
 def like_post(
     postId: int = Path(..., description="좋아요할 게시글 ID"),
-    db: Session = Depends(get_db),
-    username: Optional[str] = Depends(get_username_from_header)
+    username: str = Query(..., description="좋아요를 누르는 사용자명"),
+    db: Session = Depends(get_db)
 ):
     """
     게시글에 좋아요를 추가합니다.
     
     - **postId**: 좋아요할 게시글 ID
+    - **username**: 작성자 사용자명 (쿼리 파라미터)
     """
     if not username:
         raise HTTPException(
@@ -160,13 +158,14 @@ def like_post(
 @router.delete("/{postId}/like", response_model=LikeResponse)
 def unlike_post(
     postId: int = Path(..., description="좋아요 취소할 게시글 ID"),
-    db: Session = Depends(get_db),
-    username: Optional[str] = Depends(get_username_from_header)
+    username: str = Query(..., description="좋아요를 취소하는 사용자명"),
+    db: Session = Depends(get_db)
 ):
     """
     게시글의 좋아요를 취소합니다.
     
     - **postId**: 좋아요 취소할 게시글 ID
+    - **username**: 작성자 사용자명 (쿼리 파라미터)
     """
     if not username:
         raise HTTPException(

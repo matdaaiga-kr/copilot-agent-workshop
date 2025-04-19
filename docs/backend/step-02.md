@@ -39,7 +39,7 @@
    ```text
    프로젝트를 실행하기 위한 과정을 backend/README.md 파일에 작성해줘
    ```
-4. 이제 `keep` 버튼을 눌러 파일을 저장합니다.
+4. 이제 `keep(유지)` 버튼을 눌러 파일을 저장합니다.
    ![step02-keep](./img/step02-keep.png)
 5. Visual Studio Code에서 **새 터미널**을 열고, 터미널에 아래 명령어를 실행시켜 `$REPOSITORY_ROOT` 환경 변수를 설정합니다.
 
@@ -59,7 +59,7 @@
    ```bash
    cd $REPOSITORY_ROOT/backend
    ```
-7. `backend/README.md` 파일을 참고합니다. 터미널에 순서대로 명령어를 입력하여 프로젝트를 실행합니다.
+7. `backend/README.md` 파일을 참고합니다. 터미널에 문서에 적힌 순서대로 명령어를 입력하여 프로젝트를 실행합니다.
    ![step02-execute-order](./img/step02-execute-order.png)
 8. 프로젝트를 실행했다면, 이제 프로젝트의 오류를 마주칠 때 해당 오류를 수정해달라는 내용을 GitHub Copilot 프롬프트에 입력합니다.
    ```text

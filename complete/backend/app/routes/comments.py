@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends, HTTPException, status, Path, Header
+from fastapi import APIRouter, Depends, HTTPException, status, Path, Query
 from typing import Optional
 from sqlalchemy.orm import Session
 from app.database import get_db
@@ -11,25 +11,19 @@ router = APIRouter(
     tags=["Comments"]
 )
 
-def get_username_from_header(x_username: Optional[str] = Header(None)) -> Optional[str]:
-    """
-    헤더에서 사용자명을 추출
-    (실제 토큰 인증 대신 간단한 사용자명 기반 인증 사용)
-    """
-    return x_username
-
 @router.put("/{commentId}", response_model=Comment)
 def update_comment(
     commentId: int = Path(..., description="수정할 댓글 ID"),
     comment_update: CommentUpdate = ...,
-    db: Session = Depends(get_db),
-    username: Optional[str] = Depends(get_username_from_header)
+    username: str = Query(..., description="작성자 사용자명"),
+    db: Session = Depends(get_db)
 ):
     """
     댓글을 수정합니다.
     
     - **commentId**: 수정할 댓글 ID
     - **content**: 새 댓글 내용
+    - **username**: 작성자 사용자명 (쿼리 파라미터)
     
     인증된 사용자만 자신이 작성한 댓글을 수정할 수 있습니다.
     """
@@ -51,13 +45,14 @@ def update_comment(
 @router.delete("/{commentId}", response_model=SuccessResponse)
 def delete_comment(
     commentId: int = Path(..., description="삭제할 댓글 ID"),
-    db: Session = Depends(get_db),
-    username: Optional[str] = Depends(get_username_from_header)
+    username: str = Query(..., description="작성자 사용자명"),
+    db: Session = Depends(get_db)
 ):
     """
     댓글을 삭제합니다.
     
     - **commentId**: 삭제할 댓글 ID
+    - **username**: 작성자 사용자명 (쿼리 파라미터)
     
     인증된 사용자만 자신이 작성한 댓글을 삭제할 수 있습니다.
     """
