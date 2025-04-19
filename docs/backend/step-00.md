@@ -5,6 +5,7 @@
 - [git CLI](https://git-scm.com/downloads) 설치
 - [GitHub CLI](https://cli.github.com/) 설치
 - [Python](https://www.python.org/) 설치
+- [Docker Desktop](https://docs.docker.com/get-started/introduction/get-docker-desktop/) 설치
 - [Visual Studio Code](https://code.visualstudio.com/) 설치
 
 ## git CLI 설치 확인
@@ -82,6 +83,30 @@
    ```
 
    > 🥕 `python`을 실행시킬 수 있는 경로가 보이지 않는다면 설치하지 않은 것입니다. 만약 설치하지 않았다면 [python 설치 페이지](https://www.python.org/downloads/)에서 최신 버전을 다운로드 받아 설치합니다.
+
+## Docker Desktop 설치 확인
+
+1. 터미널에서 아래 명령어를 실행시켜 현재 Docker Desktop을 설치했는지 확인합니다.
+
+   ```bash
+   # Bash/Zsh
+   which docker
+   ```
+
+   ```bash
+   # PowerShell
+   Get-Command docker
+   ```
+
+   `docker`을 실행시킬 수 있는 경로가 보이지 않는다면 설치하지 않은 것입니다. 만약 설치하지 않았다면 [Docker Desktop 설치 페이지](https://docs.docker.com/get-started/introduction/get-docker-desktop/)에서 최신 버전을 다운로드 받아 설치합니다.
+
+1. 터미널에서 아래 명령어를 실행시켜 현재 설치한 Docker Desktop 버전을 확인합니다.
+
+   ```bash
+   docker --version
+   ```
+
+   `27.4.0` 이상의 버전이 있어야 합니다. 만약 이보다 버전이 낮다면 [Docker Desktop 설치 페이지](https://docs.docker.com/get-started/introduction/get-docker-desktop/)에서 최신 버전을 다운로드 받아 설치합니다.
 
 ## Visual Studio Code 설치 확인
 
