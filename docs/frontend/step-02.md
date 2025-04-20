@@ -22,9 +22,9 @@
    $REPOSITORY_ROOT = git rev-parse --show-toplevel
    ```
 
-1. 이어서 `$REPOSITORY_ROOT`로 이동합니다. 
+1. 이어서 `$REPOSITORY_ROOT/complete`로 이동합니다. 
    ```bash
-   cd $REPOSITORY_ROOT
+   cd $REPOSITORY_ROOT/complete
    ```
 
 1. 아래 명령어로 도커 파일을 실행합니다. 
