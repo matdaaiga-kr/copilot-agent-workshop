@@ -1,241 +1,198 @@
-from fastapi import APIRouter, Depends, HTTPException, status, Query, Path, Header
-from typing import Optional, List
+from fastapi import APIRouter, Depends, HTTPException, status, Query, Header
 from sqlalchemy.orm import Session
+from app.models import schemas
+from app.controllers import post_service, user_service
 from app.database import get_db
-from app.models.schemas import (
-    PostCreate, PostUpdate, PostDetail, PostList, 
-    CommentCreate, Comment, CommentList, 
-    LikeResponse, SuccessResponse, ErrorResponse
-)
-from app.controllers import post_service, comment_service
+from typing import Optional
 
-# 라우터 생성
-router = APIRouter(
-    prefix="/posts",
-    tags=["Posts"]
-)
+router = APIRouter(tags=["Posts"])
 
-def get_username_from_header(x_username: Optional[str] = Header(None)) -> Optional[str]:
-    """
-    헤더에서 사용자명을 추출
-    (실제 토큰 인증 대신 간단한 사용자명 기반 인증 사용)
-    """
-    return x_username
-
-@router.get("", response_model=PostList)
+@router.get("/posts", response_model=schemas.PostList)
 def get_posts_list(
-    page: int = Query(1, description="페이지 번호 (1-indexed)", ge=1),
+    page: int = Query(1, description="페이지 번호", ge=1),
     limit: int = Query(10, description="페이지당 항목 수", ge=1, le=100),
-    db: Session = Depends(get_db),
-    username: Optional[str] = Depends(get_username_from_header)
+    db: Session = Depends(get_db)
 ):
     """
-    게시글 목록을 가져옵니다.
+    게시물 목록 조회
     
     - **page**: 페이지 번호 (1부터 시작)
-    - **limit**: 페이지당 게시글 수
+    - **limit**: 페이지당 항목 수
     """
-    skip = (page - 1) * limit
-    posts, total, pages = post_service.get_posts(db, skip=skip, limit=limit, current_username=username)
+    posts, total, page, limit, pages = post_service.get_posts_list(db, page, limit)
     
-    return {
-        "items": posts,
+    # 응답 구성
+    result = {
+        "items": [],
         "total": total,
         "page": page,
         "size": limit,
         "pages": pages
     }
-
-@router.post("", response_model=PostDetail, status_code=status.HTTP_201_CREATED)
-def create_post(
-    post: PostCreate,
-    db: Session = Depends(get_db)
-):
-    """
-    새 게시글을 생성합니다.
     
-    - **content**: 게시글 내용
-    - **username**: 작성자 사용자명
-    """
-    return post_service.create_post(db, post)
-
-@router.get("/{postId}", response_model=PostDetail)
-def get_post_detail(
-    postId: int = Path(..., description="조회할 게시글 ID"),
-    db: Session = Depends(get_db),
-    username: Optional[str] = Depends(get_username_from_header)
-):
-    """
-    특정 게시글의 상세 정보를 가져옵니다.
-    
-    - **postId**: 조회할 게시글 ID
-    """
-    post = post_service.get_post(db, post_id=postId, current_username=username)
-    if not post:
-        raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND,
-            detail={"error": "게시글을 찾을 수 없습니다.", "status_code": 404}
-        )
-    return post
-
-@router.put("/{postId}", response_model=PostDetail)
-def update_post(
-    postId: int = Path(..., description="수정할 게시글 ID"),
-    post_update: PostUpdate = ...,
-    db: Session = Depends(get_db),
-    username: Optional[str] = Depends(get_username_from_header)
-):
-    """
-    게시글을 수정합니다.
-    
-    - **postId**: 수정할 게시글 ID
-    - **content**: 새 게시글 내용
-    """
-    if not username:
-        raise HTTPException(
-            status_code=status.HTTP_401_UNAUTHORIZED,
-            detail={"error": "인증이 필요합니다.", "status_code": 401}
-        )
-    
-    updated_post = post_service.update_post(db, postId, post_update, username)
-    if not updated_post:
-        raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND,
-            detail={"error": "게시글을 찾을 수 없거나 수정 권한이 없습니다.", "status_code": 404}
-        )
-    return updated_post
-
-@router.delete("/{postId}", response_model=SuccessResponse)
-def delete_post(
-    postId: int = Path(..., description="삭제할 게시글 ID"),
-    db: Session = Depends(get_db),
-    username: Optional[str] = Depends(get_username_from_header)
-):
-    """
-    게시글을 삭제합니다.
-    
-    - **postId**: 삭제할 게시글 ID
-    """
-    if not username:
-        raise HTTPException(
-            status_code=status.HTTP_401_UNAUTHORIZED,
-            detail={"error": "인증이 필요합니다.", "status_code": 401}
-        )
-    
-    success = post_service.delete_post(db, postId, username)
-    if not success:
-        raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND,
-            detail={"error": "게시글을 찾을 수 없거나 삭제 권한이 없습니다.", "status_code": 404}
-        )
-    
-    return {"message": "게시글이 성공적으로 삭제되었습니다."}
-
-@router.post("/{postId}/like", response_model=LikeResponse)
-def like_post(
-    postId: int = Path(..., description="좋아요할 게시글 ID"),
-    db: Session = Depends(get_db),
-    username: Optional[str] = Depends(get_username_from_header)
-):
-    """
-    게시글에 좋아요를 추가합니다.
-    
-    - **postId**: 좋아요할 게시글 ID
-    """
-    if not username:
-        raise HTTPException(
-            status_code=status.HTTP_401_UNAUTHORIZED,
-            detail={"error": "인증이 필요합니다.", "status_code": 401}
-        )
-    
-    like_result = post_service.like_post(db, postId, username)
-    if not like_result:
-        raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND,
-            detail={"error": "게시글을 찾을 수 없습니다.", "status_code": 404}
-        )
-    
-    return like_result
-
-@router.delete("/{postId}/like", response_model=LikeResponse)
-def unlike_post(
-    postId: int = Path(..., description="좋아요 취소할 게시글 ID"),
-    db: Session = Depends(get_db),
-    username: Optional[str] = Depends(get_username_from_header)
-):
-    """
-    게시글의 좋아요를 취소합니다.
-    
-    - **postId**: 좋아요 취소할 게시글 ID
-    """
-    if not username:
-        raise HTTPException(
-            status_code=status.HTTP_401_UNAUTHORIZED,
-            detail={"error": "인증이 필요합니다.", "status_code": 401}
-        )
-    
-    unlike_result = post_service.unlike_post(db, postId, username)
-    if not unlike_result:
-        raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND,
-            detail={"error": "게시글을 찾을 수 없습니다.", "status_code": 404}
-        )
-    
-    return unlike_result
-
-@router.get("/{postId}/comments", response_model=CommentList)
-def get_post_comments(
-    postId: int = Path(..., description="댓글을 조회할 게시글 ID"),
-    page: int = Query(1, description="페이지 번호 (1-indexed)", ge=1),
-    limit: int = Query(10, description="페이지당 항목 수", ge=1, le=100),
-    db: Session = Depends(get_db)
-):
-    """
-    특정 게시글의 댓글 목록을 가져옵니다.
-    
-    - **postId**: 댓글을 조회할 게시글 ID
-    - **page**: 페이지 번호 (1부터 시작)
-    - **limit**: 페이지당 댓글 수
-    """
-    # 게시글 존재 여부 확인
-    post = post_service.get_post(db, post_id=postId)
-    if not post:
-        raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND,
-            detail={"error": "게시글을 찾을 수 없습니다.", "status_code": 404}
-        )
-    
-    skip = (page - 1) * limit
-    comments, total, pages = comment_service.get_comments_by_post_id(
-        db, post_id=postId, skip=skip, limit=limit
-    )
-    
-    return {
-        "items": comments,
-        "total": total,
-        "page": page,
-        "size": limit,
-        "pages": pages
-    }
-
-@router.post("/{postId}/comments", response_model=Comment, status_code=status.HTTP_201_CREATED)
-def create_comment(
-    postId: int = Path(..., description="댓글을 작성할 게시글 ID"),
-    comment: CommentCreate = ...,
-    db: Session = Depends(get_db)
-):
-    """
-    게시글에 새 댓글을 작성합니다.
-    
-    - **postId**: 댓글을 작성할 게시글 ID
-    - **content**: 댓글 내용
-    - **username**: 작성자 사용자명
-    """
-    result = comment_service.create_comment(db, postId, comment)
-    if not result:
-        raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND,
-            detail={"error": "게시글을 찾을 수 없습니다.", "status_code": 404}
-        )
+    # 게시물 정보 변환
+    for post in posts:
+        # 좋아요 수 계산
+        likes_count = len(post.liked_by)
+        
+        # 댓글 수 계산
+        comments_count = len(post.comments)
+        
+        post_detail = {
+            "id": post.id,
+            "content": post.content,
+            "author": {
+                "id": post.author.id,
+                "username": post.author.username,
+                "profile_image_url": post.author.profile_image_url
+            },
+            "likes_count": likes_count,
+            "comments_count": comments_count,
+            "is_liked": False,  # 기본값
+            "created_at": post.created_at,
+            "updated_at": post.updated_at
+        }
+        result["items"].append(post_detail)
     
     return result
+
+@router.post("/posts", response_model=schemas.PostDetail, status_code=status.HTTP_201_CREATED)
+def create_post(
+    post_data: schemas.PostCreate,
+    db: Session = Depends(get_db)
+):
+    """
+    새 게시물 작성
+    
+    - **content**: 게시물 내용
+    - **username**: 작성자 이름 (localStorage에서)
+    """
+    post = post_service.create_post(db, post_data)
+    
+    # 게시물 상세 정보 구성
+    return {
+        "id": post.id,
+        "content": post.content,
+        "author": {
+            "id": post.author.id,
+            "username": post.author.username,
+            "profile_image_url": post.author.profile_image_url
+        },
+        "likes_count": 0,
+        "comments_count": 0,
+        "is_liked": False,
+        "created_at": post.created_at,
+        "updated_at": post.updated_at
+    }
+
+@router.get("/posts/{postId}", response_model=schemas.PostDetail)
+def get_post_detail(
+    postId: int,
+    username: Optional[str] = Query(None, description="사용자 이름 (선택 사항)"),
+    db: Session = Depends(get_db)
+):
+    """
+    게시물 상세 정보 조회
+    
+    - **postId**: 게시물 ID
+    - **username**: 사용자 이름 (선택 사항)
+    """
+    post, likes_count, comments_count, is_liked = post_service.get_post_detail(db, postId, username)
+    
+    # 게시물 상세 정보 구성
+    return {
+        "id": post.id,
+        "content": post.content,
+        "author": {
+            "id": post.author.id,
+            "username": post.author.username,
+            "profile_image_url": post.author.profile_image_url
+        },
+        "likes_count": likes_count,
+        "comments_count": comments_count,
+        "is_liked": is_liked,
+        "created_at": post.created_at,
+        "updated_at": post.updated_at
+    }
+
+@router.put("/posts/{postId}", response_model=schemas.PostDetail)
+def update_post(
+    postId: int,
+    post_update: schemas.PostUpdate,
+    username: str = Query(..., description="사용자 이름"),
+    db: Session = Depends(get_db)
+):
+    """
+    게시물 수정
+    
+    - **postId**: 수정할 게시물 ID
+    - **content**: 수정할 게시물 내용
+    - **username**: 작성자 이름
+    """
+    post = post_service.update_post(db, postId, post_update, username)
+    
+    # 좋아요 수와 댓글 수 계산
+    likes_count = len(post.liked_by)
+    comments_count = len(post.comments)
+    
+    # 현재 사용자의 좋아요 여부 확인
+    user = user_service.get_user_by_username(db, username)
+    is_liked = user in post.liked_by
+    
+    # 게시물 상세 정보 구성
+    return {
+        "id": post.id,
+        "content": post.content,
+        "author": {
+            "id": post.author.id,
+            "username": post.author.username,
+            "profile_image_url": post.author.profile_image_url
+        },
+        "likes_count": likes_count,
+        "comments_count": comments_count,
+        "is_liked": is_liked,
+        "created_at": post.created_at,
+        "updated_at": post.updated_at
+    }
+
+@router.delete("/posts/{postId}", response_model=schemas.SuccessResponse)
+def delete_post(
+    postId: int,
+    username: str = Query(..., description="사용자 이름"),
+    db: Session = Depends(get_db)
+):
+    """
+    게시물 삭제
+    
+    - **postId**: 삭제할 게시물 ID
+    - **username**: 작성자 이름
+    """
+    return post_service.delete_post(db, postId, username)
+
+@router.post("/posts/{postId}/like", response_model=schemas.LikeResponse)
+def like_post(
+    postId: int,
+    username: str = Query(..., description="사용자 이름"),
+    db: Session = Depends(get_db)
+):
+    """
+    게시물 좋아요
+    
+    - **postId**: 좋아요 할 게시물 ID
+    - **username**: 사용자 이름
+    """
+    return post_service.like_post(db, postId, username)
+
+@router.delete("/posts/{postId}/like", response_model=schemas.LikeResponse)
+def unlike_post(
+    postId: int,
+    username: str = Query(..., description="사용자 이름"),
+    db: Session = Depends(get_db)
+):
+    """
+    게시물 좋아요 취소
+    
+    - **postId**: 좋아요 취소할 게시물 ID
+    - **username**: 사용자 이름
+    """
+    return post_service.unlike_post(db, postId, username)

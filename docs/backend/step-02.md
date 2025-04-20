@@ -2,7 +2,7 @@
 
 ## 사전 준비 사항
 
-이전 [STEP 01 : 프롬프트 입력을 위한 기본 설정](./step-01.md)에서 프롬프트 입력을 위한 파일들을 모두 복사한 상태라고 가정합니다.
+이전 [STEP 01 : 프롬프트 입력을 위한 기본 설정](./step-01.md)에서 모든 설정을 마친 상태라고 가정합니다.
 
 ## GitHub Copilot 시작
 
@@ -21,58 +21,57 @@
    ![pick-model-1](./img/step02-pick-model1.png)
    ![pick-model-2](./img/step02-pick-model2.png)
 
+   > 🥕 팁 : 만약 Claude 3.7 Sonnet 모델이 보이지 않는다면?
+   >
+   > `GPT-4o` -> `Claude 3.5 Sonnet` -> `o3-mini` 순으로 설정해주세요.
+
 ## GitHub Copilot 실행
 
-1. 이제 다음 내용을 프롬프트에 입력합니다.
+1. 다음 내용을 GitHub Copilot 프롬프트에 입력합니다.
    ```text
-   default 경로만 우선 구현할건데, “json/default.json”을 이용하고 필요한 스키마는 "json/schemas.json" 파일을 참고해줘
+   backend 폴더 안에 FastAPI 프로젝트를 생성해줘. openapi.json 파일의 paths 변수들을 사용해 경로를 구성하면 돼.  각 경로가 참조하는 schema는 components/schemas 객체를 보고 생성하면 돼
    ```
-2. 이어서 다음 내용을 프롬프트에 입력합니다.
+2. 프로젝트가 하나 만들어졌다면, 프론트엔드 연결을 위해 CORS 에러를 해결해줘야합니다. 다음 문장을 GitHub Copilot 프롬프트에 입력합니다.
    ```text
-   “login.json” 파일을 이용해 경로를 구현하고 필요한 스키마는 “json/schemas.json” 파일을 참고해줘
+   http://localhost:3000, http://127.0.0.1:3000 주소에 대해 CORS 에러가 안 나도록 수정해줘
    ```
-3. 이어서 다음 내용을 프롬프트에 입력합니다.
+3. 다음 내용을 GitHub Copilot 프롬프트에 입력합니다.
    ```text
-   “users.json” 파일을 이용해 경로를 구현하고 필요한 스키마는 “json/schemas.json” 파일을 참고해줘
+   프로젝트를 실행하기 위한 과정을 backend/README.md 파일에 작성해줘
    ```
-4. 이어서 다음 내용을 프롬프트에 입력합니다.
-   ```text
-   “search.json” 파일을 이용해 경로를 구현하고 필요한 스키마는 “json/schemas.json” 파일을 참고해줘
-   ```
-5. 이어서 다음 내용을 프롬프트에 입력합니다.
-   ```text
-   “posts.json” 파일을 이용해 경로를 구현하고 필요한 스키마는 “json/schemas.json” 파일을 참고해줘
-   ```
-6. 이어서 다음 내용을 프롬프트에 입력합니다.
-   ```text
-   “comments.json” 파일을 이용해 경로를 구현하고 필요한 스키마는 “json/schemas.json” 파일을 참고해줘
-   ```
-7. 6번 내용까지 코파일럿이 코드를 작성해줬다면, `keep` 버튼을 눌러 파일을 저장합니다.
+4. 이제 `keep(유지)` 버튼을 눌러 파일을 저장합니다.
    ![step02-keep](./img/step02-keep.png)
-8. 프로젝트가 하나 만들어졌다면, 프론트엔드 연결을 위해 CORS 에러를 해결해줘야합니다. 다음 문장을 프롬프트에 입력합니다.
-   ```text
-   "http://localhost:3000", "http://127.0.0.1:3000" 주소에 대해 CORS 에러가 안 나도록 수정해줘
+5. Visual Studio Code에서 **새 터미널**을 열고, 터미널에 아래 명령어를 실행시켜 `$REPOSITORY_ROOT` 환경 변수를 설정합니다.
+
+   > ⚠️ 주의 : 자신이 사용 중인 터미널 종류에 따라 다음 두 명령어 중 하나를 입력합니다.
+
+   ```bash
+   # Bash/Zsh
+   REPOSITORY_ROOT=$(git rev-parse --show-toplevel)
    ```
-9. 코파일럿이 `backend` 프로젝트 안에 `README.md` 파일을 생성해서 다음과 같이 프로젝트 실행 방법 순서를 적어뒀습니다. 이를 참고해 프로젝트를 실행합니다.
+
+   ```powershell
+   # PowerShell
+   $REPOSITORY_ROOT = git rev-parse --show-toplevel
+   ```
+
+6. 이어서 터미널에 아래 명령어를 실행시켜 backend 디렉토리로 이동합니다.
+   ```bash
+   cd $REPOSITORY_ROOT/backend
+   ```
+7. `backend/README.md` 파일을 참고합니다. 터미널에 문서에 적힌 순서대로 명령어를 입력하여 프로젝트를 실행합니다.
    ![step02-execute-order](./img/step02-execute-order.png)
-
-   > 🥕 팁 : `README.md` 파일이 생성되지 않았다면, 프롬프트에 다음 내용을 입력합니다.
-   >
-   > ```text
-   > 프로젝트를 실행하기 위한 과정을 README.md 파일에 작성해줘
-   > ```
-
-10. 프로젝트를 실행했다면, 이제 프로젝트의 오류를 마주칠 때 해당 오류를 수정해달라는 내용을 프롬프트에 입력합니다.
-    ```text
-    # 예시
-    1. "CORS 에러가 나는데, 수정해줘"
-    2. 터미널 오류 메세지를 프롬프트에 복사+붙여넣기한 후, "이거 수정해줘"
-    ```
-    > 🥕 팁 : 바이브 코딩의 묘미는 "해줘"체를 사용하는 것입니다.
+8. 프로젝트를 실행했다면, 이제 프로젝트의 오류를 마주칠 때 해당 오류를 수정해달라는 내용을 GitHub Copilot 프롬프트에 입력합니다.
+   ```text
+   # 예시
+   1. "CORS 에러가 나는데, 수정해줘"
+   2. 터미널 오류 메세지를 프롬프트에 복사+붙여넣기한 후, "이거 수정해줘"
+   ```
+   > 🥕 팁 : 바이브 코딩의 묘미는 "해줘"체를 사용하는 것입니다.
 
 ## 번외) 완성된 버전의 백엔드 프로젝트를 실행해보고 싶다면?
 
-1. 원래 Visual Studio Code 창으로 돌아와 아래 명령어를 터미널에 입력합니다.
+1. 아래 명령어를 Visual Studio Code 터미널에 입력합니다.
    ```bash
    cd $REPOSITORY_ROOT/complete/backend
    ```
@@ -98,7 +97,7 @@
    DEBUG=True
    ```
 
-4. [complete/backend/README.md](/complete/backend/README.md) 파일의 `애플리케이션 실행 방법` 섹션에 따라 명령어를 입력해 프로젝트를 실행합니다.
+4. `complete/backend/README.md` 파일의 `애플리케이션 실행 방법` 섹션에 따라 명령어를 입력해 프로젝트를 실행합니다.
 
 ---
 
