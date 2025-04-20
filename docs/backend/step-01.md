@@ -42,7 +42,7 @@
 
    ```bash
    # Bash/Zsh
-   cp -a $REPOSITORY_ROOT/start/. $REPOSITORY_ROOT/
+   cp -r $REPOSITORY_ROOT/start/backend/. $REPOSITORY_ROOT/
    ```
 
    ```powershell
