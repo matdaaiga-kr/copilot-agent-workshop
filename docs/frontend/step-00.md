@@ -1,5 +1,7 @@
 # 개발 환경 설정
 
+이 문서에서는 개발을 위한 환경설정을 합니다. 만약 GitHub Codespace를 사용한다면 [STEP 01 : 프롬프트 입력을 위한 기본 설정](./step-01.md) 단계로 이동하세요. 
+
 ## 사전 준비 사항
 
 - [Visual Studio Code](https://code.visualstudio.com/) 설치
