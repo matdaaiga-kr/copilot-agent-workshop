@@ -70,7 +70,7 @@ const PostingModal = ({ isOpen, onClose, onPostCreated }) => {
 
       <ButtonContainer>
         <Button
-          primary
+          $primary
           onClick={handleSubmit}
           disabled={isLoading || !content.trim()}
         >
@@ -123,9 +123,9 @@ const ButtonContainer = styled.div`
 
 const Button = styled.button`
   background-color: ${(props) =>
-    props.primary ? props.theme.colors.primary : props.theme.colors.secondary};
+    props.$primary ? props.theme.colors.primary : props.theme.colors.secondary};
   color: ${(props) =>
-    props.primary ? props.theme.colors.text : props.theme.colors.background};
+    props.$primary ? props.theme.colors.text : props.theme.colors.background};
   border-radius: ${(props) => props.theme.sizes.borderRadius.sm};
   padding: 0.75rem 2rem;
   font-size: ${(props) => props.theme.fontSizes.sm};

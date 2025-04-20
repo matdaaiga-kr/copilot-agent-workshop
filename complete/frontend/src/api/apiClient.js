@@ -27,12 +27,6 @@ apiClient.interceptors.request.use(
           // 한글 등의 유니코드 문자를 위해 encodeURIComponent 사용
           config.headers["x-username"] = encodeURIComponent(user.username);
         }
-
-        // 디버깅 로그
-        console.log("사용자 인증 정보 추가:", {
-          userId: user.userId,
-          username: user.username,
-        });
       } catch (error) {
         console.error("사용자 정보 파싱 오류:", error);
       }

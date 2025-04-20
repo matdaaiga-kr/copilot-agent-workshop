@@ -27,7 +27,7 @@ const CommentItem = ({ comment, onCommentDelete, onCommentUpdate }) => {
     if (editContent.trim() === "") return;
 
     try {
-      await commentApi.updateComment(comment.id, editContent);
+      await commentApi.updateComment(comment.id, editContent, user.username);
       onCommentUpdate({ ...comment, content: editContent });
       setIsEditing(false);
     } catch (error) {
@@ -39,7 +39,7 @@ const CommentItem = ({ comment, onCommentDelete, onCommentUpdate }) => {
   const handleDeleteClick = async () => {
     if (window.confirm("댓글을 삭제하시겠습니까?")) {
       try {
-        await commentApi.deleteComment(comment.id);
+        await commentApi.deleteComment(comment.id, user.username);
         onCommentDelete(comment.id);
       } catch (error) {
         console.error("댓글 삭제 중 오류 발생:", error);
@@ -63,7 +63,7 @@ const CommentItem = ({ comment, onCommentDelete, onCommentUpdate }) => {
           />
           <EditActions>
             <ActionButton onClick={handleSaveEdit}>완료</ActionButton>
-            <ActionButton secondary onClick={handleCancelEdit}>
+            <ActionButton $secondary onClick={handleCancelEdit}>
               취소
             </ActionButton>
           </EditActions>
@@ -75,7 +75,7 @@ const CommentItem = ({ comment, onCommentDelete, onCommentUpdate }) => {
           {isAuthor && (
             <ActionButtons>
               <ActionButton onClick={handleEditClick}>수정</ActionButton>
-              <ActionButton secondary onClick={handleDeleteClick}>
+              <ActionButton $secondary onClick={handleDeleteClick}>
                 삭제
               </ActionButton>
             </ActionButtons>
@@ -137,7 +137,9 @@ const ActionButtons = styled.div`
 const ActionButton = styled.button`
   background: none;
   color: ${(props) =>
-    props.secondary ? props.theme.colors.darkGray : props.theme.colors.primary};
+    props.$secondary
+      ? props.theme.colors.darkGray
+      : props.theme.colors.primary};
   font-size: ${(props) => props.theme.fontSizes.xs};
   padding: 2px 4px;
   cursor: pointer;
