@@ -9,7 +9,9 @@
 
 > ⚠️ 주의 : Visual Studio Code를 사용한다면, 아래 과정들을 모두 수행해야 합니다. 그러나 GitHub Codespaces 사용을 권장합니다.
 
-## 사전 준비 사항
+## Visual Studio Code 사용
+
+### 사전 준비 사항
 
 - [git CLI](https://git-scm.com/downloads) 설치
 - [GitHub CLI](https://cli.github.com/) 설치
@@ -17,7 +19,7 @@
 - [Docker Desktop](https://docs.docker.com/get-started/introduction/get-docker-desktop/) 설치
 - [Visual Studio Code](https://code.visualstudio.com/) 설치
 
-## git CLI 설치 확인
+### git CLI 설치 확인
 
 1. 터미널에서 아래 명령어를 실행시켜 현재 git CLI를 설치했는지 확인합니다.
 
@@ -41,9 +43,9 @@
    git --version
    ```
 
-   `2.48.0` 이상의 버전이 있어야 합니다. 만약 이보다 버전이 낮다면 [git CLI 설치 페이지](https://git-scm.com/downloads)에서 최신 버전을 다운로드 받아 설치합니다.
+   `2.49.0` 이상의 버전이 있어야 합니다. 만약 이보다 버전이 낮다면 [git CLI 설치 페이지](https://git-scm.com/downloads)에서 최신 버전을 다운로드 받아 설치합니다.
 
-## GitHub CLI 설치 확인
+### GitHub CLI 설치 확인
 
 1. 터미널에서 아래 명령어를 실행시켜 현재 GitHub CLI를 설치했는지 확인합니다.
 
@@ -77,7 +79,7 @@
 
    만약 로그인하지 않았다고 나온다면, `gh auth login` 명령어를 통해 로그인합니다.
 
-## Python 설치 확인
+### Python 설치 확인
 
 1. 터미널에서 아래 명령어를 실행시켜 현재 Python을 설치했는지 확인합니다.
 
@@ -95,7 +97,7 @@
    >
    > ⚠️ 주의 : 특정 패키지가 아직 최신 버전의 python과 호환되지 않는 문제가 있습니다. 최신 버전(`3.13.*`) 말고 `3.12.*` 버전을 사용해주세요. 이미 3.13 버전이 설치되어 있다면, 버전을 낮춰야 합니다.
 
-## Docker Desktop 설치 확인
+### Docker Desktop 설치 확인
 
 1. 터미널에서 아래 명령어를 실행시켜 현재 Docker Desktop을 설치했는지 확인합니다.
 
@@ -117,9 +119,9 @@
    docker --version
    ```
 
-   `27.4.0` 이상의 버전이 있어야 합니다. 만약 이보다 버전이 낮다면 [Docker Desktop 설치 페이지](https://docs.docker.com/get-started/introduction/get-docker-desktop/)에서 최신 버전을 다운로드 받아 설치합니다.
+   `4.40.0` 이상의 버전이 있어야 합니다. 만약 이보다 버전이 낮다면 [Docker Desktop 설치 페이지](https://docs.docker.com/get-started/introduction/get-docker-desktop/)에서 최신 버전을 다운로드 받아 설치합니다.
 
-## Visual Studio Code 설치 확인
+### Visual Studio Code 설치 확인
 
 1. 터미널에서 아래 명령어를 실행시켜 현재 Visual Studio Code를 설치했는지 확인합니다.
 
@@ -147,12 +149,12 @@
 
    > 🥕 팁 : 만약 터미널에서 `code` 명령어를 실행시킬 수 없다면, [이 문서](https://code.visualstudio.com/docs/setup/mac#_launching-from-the-command-line)를 참고하여 설정합니다.
 
-## Visual Studio Code 시작
+### Visual Studio Code 시작
 
 1. 터미널을 열고 작업할 디렉토리로 이동합니다.
 2. 작업 디렉토리로 이동했다면, 아래 명령어를 실행시켜 이 리포지토리를 자신의 GitHub 계정으로 포크한 후 자신의 컴퓨터로 클론합니다.
    ```bash
-   gh repo fork matdaaiga-kr/copilot-agent-workshop --clone
+   gh repo fork matdaaiga-kr/github-copilot-workshop --clone
    ```
 3. 터미널에서 아래 명령어를 실행시켜 Visual Studio Code를 실행시킵니다.
 
@@ -188,7 +190,7 @@
 
    ```powershell
    # PowerShell
-    code --list-extensions | Select-String "ms-dotnettools.csdevkit"
+   code --list-extensions | Select-String "github.copilot"
    ```
 
    만약 아무 메시지도 보이지 않는다면, 아직 설치하지 않은 것입니다. 아래 두 명령어를 차례로 실행시켜 설치합니다.
