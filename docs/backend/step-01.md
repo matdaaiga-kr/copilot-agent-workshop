@@ -47,7 +47,7 @@
 
    ```powershell
    # PowerShell
-   Copy-Item -Path $REPOSITORY_ROOT/start/* -Destination $REPOSITORY_ROOT/ -Recurse -Force
+   Copy-Item -Path $REPOSITORY_ROOT/start/backend/* -Destination $REPOSITORY_ROOT/ -Recurse -Force
    ```
 
 ---
