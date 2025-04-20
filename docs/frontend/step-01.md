@@ -4,6 +4,8 @@
 
 이전 [STEP 00 : 개발 환경 설정](./step-00.md)에서 개발 환경을 모두 설정한 상태라고 가정합니다.
 
+만약 GitHub Codespace를 사용한다면 이전 단계를 생략하고 [Figma 디자인 구현](#figma-디자인-구현)으로 넘어갑니다.
+
 ## GitHub Copilot 설정
 
 1. 설정에서 `Agent`를 검색하고 아래와 같이 적용합니다.
@@ -47,6 +49,9 @@
 
 [Figma](https://www.figma.com)로 미리 디자인 후, Figma MCP를 사용하면 Copilot이 구체적인 디자인을 구현할 수 있습니다. 이번 세션에서 사용된 Figma 파일은 [여기](https://www.figma.com/community/file/1493853152731177725)에서 확인할 수 있습니다.
 
+1. 만약 GitHub Codespace를 사용한다면, [Figma 웹 페이지](https://www.figma.com)의 설정 - Security 창에서 API Key를 생성 후 `.devcontainer/devcontainer.json`에 아래 이미지를 참고하여 붙여넣습니다. <br/>
+   ![screenshot](./img/step01_devcontainer.png)
+
 1. 아래 버튼을 눌러 workspace로 프로젝트를 불러옵니다.
    ![screenshot](./img/step00_figma_workspace.png)
 
@@ -58,42 +63,28 @@
    리액트로 [홈 화면]({YOUR_FIGMA_LINK})을 구현해줘.
    ```
 
-> 위와 같이 `[텍스트](링크)` 형태로 프롬프트를 작성하는 것은 마크다운의 링크 삽입 문법입니다. 대괄호 내부의 텍스트를 클릭하면 소괄호의 링크로 연결됩니다. 프롬프트를 입력할 때 마크다운 형식으로 프롬프트를 작성한다면 더 좋은 결과를 얻을 수 있습니다. 
+> 위와 같이 `[텍스트](링크)` 형태로 프롬프트를 작성하는 것은 마크다운의 링크 삽입 문법입니다. 대괄호 내부의 텍스트를 클릭하면 소괄호의 링크로 연결됩니다. 프롬프트를 입력할 때 마크다운 형식으로 프롬프트를 작성한다면 더 좋은 결과를 얻을 수 있습니다.
 
-## 시작 프로젝트 복사
+## 리포지토리 루트 설정
 
-1. 아래 명령어를 입력해 실습 디렉토리를 만들고 시작 프로젝트를 복사합니다.
+1. Visual Studio Code 터미널을 열고 아래 명령어를 실행시켜 `$REPOSITORY_ROOT` 환경 변수를 설정합니다.
 
    > ⚠️ 주의 : 자신이 사용 중인 터미널 종류에 따라 다음 두 명령어 중 하나를 입력합니다.
 
    ```bash
    # Bash/Zsh
-   mkdir -p $REPOSITORY_ROOT/frontend && \
-      cp -a $REPOSITORY_ROOT/save-points/frontend/. $REPOSITORY_ROOT/frontend/ && \
-      cp $REPOSITORY_ROOT/save-points/openapi.json $REPOSITORY_ROOT/frontend/
+   REPOSITORY_ROOT=$(git rev-parse --show-toplevel)
    ```
 
    ```powershell
    # PowerShell
-   New-Item -Type Directory -Path $REPOSITORY_ROOT/frontend -Force && `
-      Copy-Item -Path $REPOSITORY_ROOT/save-points/frontend/* -Destination $REPOSITORY_ROOT/frontend -Recurse -Force && `
-      Copy-Item -Path $REPOSITORY_ROOT/save-points/openapi.json -Destination $REPOSITORY_ROOT/frontend -Force
+   $REPOSITORY_ROOT = git rev-parse --show-toplevel
    ```
 
-2. 프론트엔드 프로젝트로 이동합니다.
-   ```bash
-   cd $REPOSITORY_ROOT/frontend
-   ```
-3. 다음 명령어를 이용해 Visual Studio Code 창을 하나 더 열어줍니다.
-   ```bash
-   code .
-   ```
-4. 새롭게 열린 Visual Studio Code 화면은 다음과 같이 `frontend` 폴더가 루트 디렉토리에 위치해 있습니다.
-   ![new window](./img/step01_new_window.png)
+## 프롬프트 입력하고 프로젝트 시작하기
 
-## 프롬프트 입력
+1. 아래와 같이 프롬프트를 입력합니다.
 
-1. 아래와 같이 프롬프트를 입력합니다. 
    ```text
    리액트 개발을 시작하기 위한 세팅을 해줘. 프로젝트 이름은 {YOUR_PROJECT_NAME}이야.
    ```
@@ -105,13 +96,12 @@
 
 > 앱 전체를 프롬프트로 입력하는 것 보다, 기능별로(홈 화면, 검색 화면 등) 명령하는 것이 더 고품질의 결과물을 얻을 수 있습니다.
 
-# 번외) 완성된 버전의 백엔드 프로젝트를 실행해보고 싶다면?
+# 번외) 완성된 버전의 프론트엔드 프로젝트를 실행해보고 싶다면?
 
 1. 아래 명령어를 터미널에 입력합니다.
    ```bash
    cd $REPOSITORY_ROOT/complete/frontend && npm install
    ```
-   
 1. 아래 명령어를 터미널에 입력하여 서버를 실행합니다.
 
    ```bash
