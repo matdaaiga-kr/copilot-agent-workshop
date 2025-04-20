@@ -81,6 +81,20 @@
    $REPOSITORY_ROOT = git rev-parse --show-toplevel
    ```
 
+## Copilot 지침 설정
+2. Visual Studio Code 터미널에 아래 명령어를 입력해 커스텀 코파일럿 지침 내용을 만듭니다.
+
+   > ⚠️ 주의 : 자신이 사용 중인 터미널 종류에 따라 다음 두 명령어 중 하나를 입력합니다.
+   ```bash
+   # Bash/Zsh
+   cp -a $REPOSITORY_ROOT/start/. $REPOSITORY_ROOT/
+   ```
+
+   ```powershell
+   # PowerShell
+   Copy-Item -Path $REPOSITORY_ROOT/start/* -Destination $REPOSITORY_ROOT/ -Recurse -Force
+   ```
+
 ## 프롬프트 입력하고 프로젝트 시작하기
 
 1. 아래와 같이 프롬프트를 입력합니다.
