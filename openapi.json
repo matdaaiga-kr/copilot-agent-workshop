@@ -278,6 +278,13 @@
 						"required": true,
 						"description": "ID of the post to retrieve",
 						"schema": { "type": "integer", "title": "Post ID" }
+					},
+					{
+						"name": "username",
+						"in": "query",
+						"required": false,
+						"description": "Username for authentication (optional)",
+						"schema": { "type": "string" }
 					}
 				],
 				"responses": {
@@ -319,6 +326,13 @@
 						"required": true,
 						"description": "ID of the post to delete",
 						"schema": { "type": "integer", "title": "Post ID" }
+					},
+					{
+						"name": "username",
+						"in": "query",
+						"required": true,
+						"description": "Username for authentication",
+						"schema": { "type": "string" }
 					}
 				],
 				"responses": {
@@ -368,6 +382,13 @@
 						"required": true,
 						"description": "ID of the post to update",
 						"schema": { "type": "integer", "title": "Post ID" }
+					},
+					{
+						"name": "username",
+						"in": "query",
+						"required": true,
+						"description": "Username for authentication",
+						"schema": { "type": "string" }
 					}
 				],
 				"requestBody": {
@@ -431,7 +452,7 @@
 					},
 					{
 						"name": "username",
-						"in": "header",
+						"in": "query",
 						"required": true,
 						"description": "Username for authentication",
 						"schema": { "type": "string" }
@@ -487,7 +508,7 @@
 					},
 					{
 						"name": "username",
-						"in": "header",
+						"in": "query",
 						"required": true,
 						"description": "Username for authentication",
 						"schema": { "type": "string" }
@@ -604,13 +625,6 @@
 						"required": true,
 						"description": "ID of the post to comment on",
 						"schema": { "type": "integer", "title": "Post ID" }
-					},
-					{
-						"name": "username",
-						"in": "header",
-						"required": true,
-						"description": "Username for authentication",
-						"schema": { "type": "string" }
 					}
 				],
 				"requestBody": {
@@ -674,7 +688,7 @@
 					},
 					{
 						"name": "username",
-						"in": "header",
+						"in": "query",
 						"required": true,
 						"description": "Username for authentication",
 						"schema": { "type": "string" }
@@ -730,7 +744,7 @@
 					},
 					{
 						"name": "username",
-						"in": "header",
+						"in": "query",
 						"required": true,
 						"description": "Username for authentication",
 						"schema": { "type": "string" }
