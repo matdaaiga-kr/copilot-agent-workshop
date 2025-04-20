@@ -49,18 +49,10 @@ const SearchPage = () => {
       setError("");
       setPage(1);
 
-      // 검색어 디버깅 로그 추가
-      console.log("검색어 원본:", searchTerm);
-      console.log("검색어 인코딩 후:", encodeURIComponent(searchTerm));
-
       const response = await searchApi.searchUsers(searchTerm, 1);
-
-      // 응답 데이터 로깅
-      console.log("검색 응답 데이터:", response.data);
 
       // 검색 결과가 없는 경우
       if (!response.data.items || response.data.items.length === 0) {
-        console.log("검색 결과가 없습니다.");
         setSearchResults([]);
         setHasMore(false);
         return;
@@ -76,12 +68,9 @@ const SearchPage = () => {
               : user.username,
         })) || [];
 
-      console.log("처리된 검색 결과:", processedResults);
-
       setSearchResults(processedResults);
       setHasMore(response.data.page < response.data.pages);
     } catch (error) {
-      console.error("검색 중 오류 발생:", error);
       if (error.response) {
         console.error("오류 응답:", error.response.data);
         console.error("오류 상태:", error.response.status);
@@ -101,14 +90,7 @@ const SearchPage = () => {
       setIsLoading(true);
       const nextPage = page + 1;
 
-      // 검색어 로깅
-      console.log("추가 데이터 검색어:", searchTerm);
-      console.log("인코딩된 검색어:", encodeURIComponent(searchTerm));
-
       const response = await searchApi.searchUsers(searchTerm, nextPage);
-
-      // 응답 데이터 로깅
-      console.log("추가 결과 응답 데이터:", response.data);
 
       // 추가 결과의 사용자 이름도 디코딩 처리
       const processedResults =
@@ -120,13 +102,10 @@ const SearchPage = () => {
               : user.username,
         })) || [];
 
-      console.log("처리된 추가 결과:", processedResults);
-
       setSearchResults((prev) => [...prev, ...processedResults]);
       setPage(nextPage);
       setHasMore(response.data.page < response.data.pages);
     } catch (error) {
-      console.error("추가 결과 불러오기 오류:", error);
       if (error.response) {
         console.error("오류 응답:", error.response.data);
         console.error("오류 상태:", error.response.status);
@@ -156,6 +135,7 @@ const SearchPage = () => {
 
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isLoading, hasMore]);
 
   // Enter 키로 검색 실행
@@ -168,6 +148,7 @@ const SearchPage = () => {
 
     window.addEventListener("keypress", handleKeyPress);
     return () => window.removeEventListener("keypress", handleKeyPress);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [searchTerm]);
 
   return (

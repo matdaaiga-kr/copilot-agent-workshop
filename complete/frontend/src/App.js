@@ -23,7 +23,9 @@ function App() {
     <AuthProvider>
       <ThemeProvider theme={theme}>
         <GlobalStyle />
-        <Router>
+        <Router
+          future={{ v7_startTransition: true, v7_relativeSplatPath: true }}
+        >
           <Routes>
             <Route path="/" element={<HomePage />} />
             <Route path="/post/:postId" element={<PostDetailPage />} />

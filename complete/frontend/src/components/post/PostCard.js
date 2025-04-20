@@ -57,11 +57,11 @@ const PostCard = ({ post }) => {
       if (!user) return; // 로그인되지 않은 경우
 
       if (isLiked) {
-        const response = await postApi.unlikePost(post.id);
+        const response = await postApi.unlikePost(post.id, user.username);
         setLikesCount(response.data.likes_count);
         setIsLiked(false);
       } else {
-        const response = await postApi.likePost(post.id);
+        const response = await postApi.likePost(post.id, user.username);
         setLikesCount(response.data.likes_count);
         setIsLiked(true);
       }

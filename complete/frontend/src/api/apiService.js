@@ -20,22 +20,33 @@ export const postApi = {
     apiClient.post("/posts", { content, username }),
 
   // 포스트 수정
-  updatePost: (postId, content) =>
-    apiClient.put(`/posts/${postId}`, { content }),
+  updatePost: (postId, content, username) => {
+    return apiClient.put(
+      `/posts/${postId}`,
+      { content },
+      { params: { username } }
+    );
+  },
 
   // 포스트 삭제
-  deletePost: (postId) => apiClient.delete(`/posts/${postId}`),
+  deletePost: (postId, username) => {
+    return apiClient.delete(`/posts/${postId}`, {
+      params: { username },
+    });
+  },
 
   // 좋아요 추가 (userId와 username은 헤더에서 전달)
-  likePost: (postId) => {
-    // POST 요청으로 인증 헤더만 사용하여 요청
-    return apiClient.post(`/posts/${postId}/like`);
+  likePost: (postId, username) => {
+    return apiClient.post(`/posts/${postId}/like`, null, {
+      params: { username },
+    });
   },
 
   // 좋아요 취소 (userId와 username은 헤더에서 전달)
-  unlikePost: (postId) => {
-    // DELETE 요청으로 인증 헤더만 사용하여 요청
-    return apiClient.delete(`/posts/${postId}/like`);
+  unlikePost: (postId, username) => {
+    return apiClient.delete(`/posts/${postId}/like`, {
+      params: { username },
+    });
   },
 };
 
@@ -50,20 +61,28 @@ export const commentApi = {
     apiClient.post(`/posts/${postId}/comments`, { content, username }),
 
   // 댓글 수정 - OpenAPI 스키마에 맞게 수정
-  updateComment: (commentId, content) =>
-    apiClient.put(`/comments/${commentId}`, { content }),
+  updateComment: (commentId, content, username) => {
+    return apiClient.put(
+      `/comments/${commentId}`,
+      { content },
+      {
+        params: { username },
+      }
+    );
+  },
 
   // 댓글 삭제
-  deleteComment: (commentId) => apiClient.delete(`/comments/${commentId}`),
+  deleteComment: (commentId, username) => {
+    return apiClient.delete(`/comments/${commentId}`, {
+      params: { username },
+    });
+  },
 };
 
 // 검색 관련 API
 export const searchApi = {
   // 사용자 검색
   searchUsers: (username, page = 1, limit = 10) => {
-    // 디버깅 로그 추가
-    console.log("[API 호출] 사용자 검색 - 원본 검색어:", username);
-
     // encodeURIComponent 대신 axios의 자동 파라미터 인코딩 사용
     return apiClient.get(`/search`, {
       params: {

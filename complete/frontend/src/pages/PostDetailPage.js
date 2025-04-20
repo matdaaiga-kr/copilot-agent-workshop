@@ -55,9 +55,15 @@ const PostDetailPage = () => {
   const [page, setPage] = useState(1);
   const [hasMoreComments, setHasMoreComments] = useState(true);
 
+  // 게시글 수정 관련 상태
+  const [isEditing, setIsEditing] = useState(false);
+  const [editContent, setEditContent] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
   // 게시물 상세 정보 조회
   useEffect(() => {
     fetchPostDetail();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [postId]);
 
   // 댓글 목록 조회
@@ -65,6 +71,7 @@ const PostDetailPage = () => {
     if (postId) {
       fetchComments();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [postId, page]);
 
   // 게시물 상세 정보 불러오기
@@ -76,6 +83,7 @@ const PostDetailPage = () => {
       setPost(response.data);
       setIsLiked(response.data.is_liked || false);
       setLikesCount(response.data.likes_count || 0);
+      setEditContent(response.data.content); // 수정 폼을 위해 내용 저장
     } catch (error) {
       console.error("게시물 상세 조회 중 오류 발생:", error);
       setError("게시물을 불러오는 중 오류가 발생했습니다.");
@@ -118,11 +126,11 @@ const PostDetailPage = () => {
 
     try {
       if (isLiked) {
-        const response = await postApi.unlikePost(postId);
+        const response = await postApi.unlikePost(postId, user.username);
         setLikesCount(response.data.likes_count);
         setIsLiked(false);
       } else {
-        const response = await postApi.likePost(postId);
+        const response = await postApi.likePost(postId, user.username);
         setLikesCount(response.data.likes_count);
         setIsLiked(true);
       }
@@ -173,6 +181,63 @@ const PostDetailPage = () => {
     );
   };
 
+  // 게시글 작성자인지 확인
+  const isAuthor = user && post && user.userId === post.author.id;
+
+  // 수정 모드 활성화
+  const handleEditClick = () => {
+    setIsEditing(true);
+    setEditContent(post.content);
+  };
+
+  // 수정 취소
+  const handleEditCancel = () => {
+    setIsEditing(false);
+    setEditContent(post.content);
+  };
+
+  // 수정 내용 저장
+  const handleEditSave = async () => {
+    if (!editContent.trim()) {
+      return;
+    }
+
+    try {
+      setIsSubmitting(true);
+      const response = await postApi.updatePost(
+        postId,
+        editContent,
+        user.username
+      );
+      setPost(response.data);
+      setIsEditing(false);
+    } catch (error) {
+      console.error("게시글 수정 중 오류 발생:", error);
+      alert("게시글 수정 중 오류가 발생했습니다.");
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
+  // 게시글 삭제
+  const handleDeleteClick = async () => {
+    if (!window.confirm("정말로 이 게시글을 삭제하시겠습니까?")) {
+      return;
+    }
+
+    try {
+      setIsSubmitting(true);
+      await postApi.deletePost(postId, user.username);
+      alert("게시글이 삭제되었습니다.");
+      navigate("/");
+    } catch (error) {
+      console.error("게시글 삭제 중 오류 발생:", error);
+      alert("게시글 삭제 중 오류가 발생했습니다.");
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
   if (isLoading) {
     return (
       <Layout>
@@ -211,15 +276,42 @@ const PostDetailPage = () => {
           </UserInfoContainer>
 
           <ContentContainer>
-            <PostContent>{post.content}</PostContent>
+            {isEditing ? (
+              <EditForm>
+                <EditTextarea
+                  value={editContent}
+                  onChange={(e) => setEditContent(e.target.value)}
+                  disabled={isSubmitting}
+                />
+                <EditActions>
+                  <EditButton onClick={handleEditSave} disabled={isSubmitting}>
+                    저장
+                  </EditButton>
+                  <CancelButton
+                    onClick={handleEditCancel}
+                    disabled={isSubmitting}
+                  >
+                    취소
+                  </CancelButton>
+                </EditActions>
+              </EditForm>
+            ) : (
+              <PostContent>{post.content}</PostContent>
+            )}
           </ContentContainer>
 
           <ActionsContainer>
-            <ActionButton onClick={handleLikeToggle} isActive={isLiked}>
+            <ActionButton onClick={handleLikeToggle} $isActive={isLiked}>
               <HeartIcon filled={isLiked} />
               {likesCount > 0 && <ActionCount>{likesCount}</ActionCount>}
             </ActionButton>
             <ActionText>댓글 {post.comments_count}</ActionText>
+            {isAuthor && !isEditing && (
+              <AuthorActions>
+                <EditButton onClick={handleEditClick}>수정</EditButton>
+                <DeleteButton onClick={handleDeleteClick}>삭제</DeleteButton>
+              </AuthorActions>
+            )}
           </ActionsContainer>
         </PostContainer>
 
@@ -336,6 +428,49 @@ const PostContent = styled.p`
   word-break: break-word;
 `;
 
+const EditForm = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+`;
+
+const EditTextarea = styled.textarea`
+  width: 100%;
+  font-size: ${(props) => props.theme.fontSizes.md};
+  padding: 0.5rem;
+  border: 1px solid ${(props) => props.theme.colors.gray};
+  border-radius: ${(props) => props.theme.sizes.borderRadius.sm};
+`;
+
+const EditActions = styled.div`
+  display: flex;
+  gap: 0.5rem;
+`;
+
+const EditButton = styled.button`
+  background-color: ${(props) => props.theme.colors.primary};
+  color: #fff;
+  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: ${(props) => props.theme.sizes.borderRadius.sm};
+
+  &:hover {
+    background-color: ${(props) => props.theme.colors.primaryHover};
+  }
+`;
+
+const CancelButton = styled.button`
+  background-color: ${(props) => props.theme.colors.gray};
+  color: #fff;
+  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: ${(props) => props.theme.sizes.borderRadius.sm};
+
+  &:hover {
+    background-color: ${(props) => props.theme.colors.grayHover};
+  }
+`;
+
 const ActionsContainer = styled.div`
   display: flex;
   align-items: center;
@@ -347,7 +482,7 @@ const ActionButton = styled.button`
   display: flex;
   align-items: center;
   color: ${(props) =>
-    props.isActive ? props.theme.colors.heart : props.theme.colors.text};
+    props.$isActive ? props.theme.colors.heart : props.theme.colors.text};
   gap: 4px;
 `;
 
@@ -358,6 +493,23 @@ const ActionCount = styled.span`
 const ActionText = styled.span`
   font-size: ${(props) => props.theme.fontSizes.sm};
   color: ${(props) => props.theme.colors.text};
+`;
+
+const AuthorActions = styled.div`
+  display: flex;
+  gap: 0.5rem;
+`;
+
+const DeleteButton = styled.button`
+  background-color: ${(props) => props.theme.colors.danger};
+  color: #fff;
+  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: ${(props) => props.theme.sizes.borderRadius.sm};
+
+  &:hover {
+    background-color: ${(props) => props.theme.colors.dangerHover};
+  }
 `;
 
 const CommentsSection = styled.section`

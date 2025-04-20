@@ -49,7 +49,6 @@ const ProfilePage = () => {
     try {
       setIsLoading(true);
       setError("");
-      console.log(`프로필 정보 요청 중: userId=${userId}`);
 
       // 헤더에 사용자 인증 정보 포함되도록 요청
       const response = await userApi.getUserProfile(userId);
@@ -61,9 +60,7 @@ const ProfilePage = () => {
       if (profileData.username && typeof profileData.username === "string") {
         try {
           profileData.username = decodeURIComponent(profileData.username);
-        } catch (e) {
-          console.log("이름 디코딩 실패, 원본 이름 사용:", e);
-        }
+        } catch (e) {}
       }
 
       // 게시글 정보가 있는지 확인하고 가공
@@ -73,9 +70,7 @@ const ProfilePage = () => {
           if (post.author && post.author.username) {
             try {
               post.author.username = decodeURIComponent(post.author.username);
-            } catch (e) {
-              console.log("게시글 작성자 이름 디코딩 실패:", e);
-            }
+            } catch (e) {}
           }
           return post;
         });
@@ -97,22 +92,13 @@ const ProfilePage = () => {
               comment.author.username = decodeURIComponent(
                 comment.author.username
               );
-            } catch (e) {
-              console.log("댓글 작성자 이름 디코딩 실패:", e);
-            }
+            } catch (e) {}
           }
           return comment;
         });
       } else {
         profileData.comments = [];
       }
-
-      // 응답 데이터 로깅
-      console.log("받은 프로필 데이터:", profileData);
-      console.log(
-        "게시글 개수:",
-        profileData.posts ? profileData.posts.length : 0
-      );
 
       setUserProfile(profileData);
     } catch (error) {
@@ -178,10 +164,6 @@ const ProfilePage = () => {
       </Layout>
     );
   }
-
-  // 게시글 존재 여부 확인 및 로깅
-  console.log("사용자 게시글 수:", userProfile.posts_count);
-  console.log("사용자 게시글 배열:", userProfile.posts);
 
   return (
     <Layout>
