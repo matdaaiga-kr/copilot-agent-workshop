@@ -40,7 +40,7 @@
 1. 터미널을 열고 작업할 디렉토리로 이동합니다.
 2. 작업 디렉토리로 이동했다면, 아래 명령어를 실행시켜 이 리포지토리를 자신의 GitHub 계정으로 포크한 후 자신의 컴퓨터로 클론합니다.
    ```bash
-   gh repo fork matdaaiga-kr/copilot-agent-workshop --clone
+   gh repo fork matdaaiga-kr/github-copilot-workshop --clone
    ```
 3. 터미널에서 아래 명령어를 실행시켜 Visual Studio Code를 실행시킵니다.
 
@@ -59,10 +59,10 @@
    > ⚠️ 주의 : 만약 `origin`에 `matdaaiga-kr`이 보이면 자신의 리포지토리에서 다시 클론해야 합니다.
 
    ```bash
-   origin  https://github.com/<자신의 GitHub ID>/copilot-agent-workshop.git (fetch)
-   origin  https://github.com/<자신의 GitHub ID>/copilot-agent-workshop.git (push)
-   upstream        https://github.com/matdaaiga-kr/copilot-agent-workshop.git (fetch)
-   upstream        https://github.com/matdaaiga-kr/copilot-agent-workshop.git (push)
+   origin  https://github.com/<자신의 GitHub ID>/github-copilot-workshop.git (fetch)
+   origin  https://github.com/<자신의 GitHub ID>/github-copilot-workshop.git (push)
+   upstream        https://github.com/matdaaiga-kr/github-copilot-workshop.git (fetch)
+   upstream        https://github.com/matdaaiga-kr/github-copilot-workshop.git (push)
    ```
 
 5. Visual Studio Code의 터미널에서 아래 명령어를 실행시켜 [GitHub Copilot 익스텐션](https://marketplace.visualstudio.com/items?itemName=GitHub.copilot)과 [GitHub Copilot Chat 익스텐션](https://marketplace.visualstudio.com/items?itemName=GitHub.copilot-chat)을 설치했는지 확인합니다.
@@ -76,7 +76,7 @@
 
    ```powershell
    # PowerShell
-    code --list-extensions | Select-String "ms-dotnettools.csdevkit"
+    code --list-extensions | Select-String "github.copilot"
    ```
 
    만약 아무 메시지도 보이지 않는다면, 아직 설치하지 않은 것입니다. 아래 두 명령어를 차례로 실행시켜 설치합니다.
