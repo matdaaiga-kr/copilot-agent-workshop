@@ -1,6 +1,6 @@
 # 개발 환경 설정
 
-## GitHub Codespaces를 사용 할 생각이라면?
+## GitHub Codespaces 사용
 
 ![step00-codespaces](./img/step00-codespaces.png)
 위 이미지를 따라 차례로 `[<> Code]` 👉 `[Codespaces]` 👉 `[Create codespace on main]`를 클릭해서 GitHub Codespaces 인스턴스를 생성합니다. 네트워크 사정에 따라 대략 5분-10분 정도 걸립니다.
