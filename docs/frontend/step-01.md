@@ -87,12 +87,12 @@
    > ⚠️ 주의 : 자신이 사용 중인 터미널 종류에 따라 다음 두 명령어 중 하나를 입력합니다.
    ```bash
    # Bash/Zsh
-   cp -a $REPOSITORY_ROOT/start/. $REPOSITORY_ROOT/
+   cp -r $REPOSITORY_ROOT/start/frontend/.github/. $REPOSITORY_ROOT/.github/
    ```
 
    ```powershell
    # PowerShell
-   Copy-Item -Path $REPOSITORY_ROOT/start/* -Destination $REPOSITORY_ROOT/ -Recurse -Force
+   Copy-Item -Path $REPOSITORY_ROOT/start/frontend/* -Destination $REPOSITORY_ROOT/ -Recurse -Force
    ```
 
 ## 프롬프트 입력하고 프로젝트 시작하기
