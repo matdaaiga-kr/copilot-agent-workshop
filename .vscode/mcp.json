@@ -1,0 +1,22 @@
+{
+  "inputs": [
+    {
+      "type": "promptString",
+      "id": "figma-key",
+      "description": "Figma API Key",
+      "password": true
+    }
+  ],
+  "servers": {
+    "Framelink Figma MCP": {
+      "type": "stdio",
+      "command": "npx",
+      "args": [
+        "-y",
+        "figma-developer-mcp",
+        "--figma-api-key=${input:figma-key}",
+        "--stdio"
+      ]
+    }
+  }
+}
