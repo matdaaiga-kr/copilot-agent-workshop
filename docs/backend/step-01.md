@@ -36,11 +36,6 @@
    New-Item -Type Directory -Path $REPOSITORY_ROOT/backend -Force
    ```
 
-2. Visual Studio Code 터미널에 아래 명령어를 입력해 `backend` 경로를 이동합니다.
-   ```bash
-   cd $REPOSITORY_ROOT/backend
-   ```
-
 ---
 
 수고하셨습니다!! **프롬프트 입력을 위한 기본 설정** 부분이 끝났습니다. 이제 [STEP 02 : 백엔드 API 개발](./step-02.md) 단계로 넘어가겠습니다.
