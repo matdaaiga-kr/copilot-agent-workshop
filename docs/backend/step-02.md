@@ -33,7 +33,7 @@
 1. 다음 내용을 GitHub Copilot 프롬프트에 입력합니다.
 
    ```text
-   backend 폴더 안에 FastAPI 프로젝트를 생성해줘. openapi.json 파일의 paths 변수들을 사용해 경로를 구성하면 돼.  각 경로가 참조하는 schema는 components/schemas 객체를 보고 생성하면 돼
+   backend 폴더 안에 FastAPI 프로젝트를 생성해줘. openapi.json 파일의 paths 변수를 사용해 경로를 구성하면 돼.  각 경로가 참조하는 schema는 components/schemas 객체를 보고 생성하면 돼
    ```
 
    > ⚠️ 주의 : 코파일럿이 코드를 모두 작성하면 프로젝트 실행 방법에 대해 알려줍니다. 우선은 실행하지 마세요.
@@ -76,7 +76,7 @@
 
    ![step02-navigate-docs](./img/step02-navigate-docs.png)
 
-### 애플리케이션 테스트
+### <a id="application-test"></a>애플리케이션 테스트
 
 #### login 경로
 
@@ -110,7 +110,7 @@
 
 테스트가 끝났다면, 실행 중인 터미널에 `ctrl+c` 키를 입력해 프로그램을 종료합니다.
 
-## 번외) 완성된 버전의 백엔드 프로젝트를 실행해보고 싶다면?
+## <a id="extra-completed-backend"></a>번외) 완성된 버전의 백엔드 프로젝트를 실행해보고 싶다면?
 
 1. 아래 명령어를 터미널에 입력합니다.
    ```bash
