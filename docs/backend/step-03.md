@@ -34,17 +34,34 @@
 
    > ⚠️ 주의 : 시스템 정보가 출력되지 않고 에러 메세지가 나온다면, 도커 데스크탑을 설치 및 실행해주세요.
 
-4. 아래 명령어를 터미널에 입력해 `backend` 프로젝트를 컨테이너로 실행합니다.
+4. 아래 명령어를 터미널에 입력해 도커 컨테이너를 실행합니다.
+
+   ##### 로컬 환경(Apple Silicon Mac)에서 실행할 경우:
 
    ```bash
    docker run -d -p 8000:8000 -v $(pwd)/threads_app.db:/app/threads_app.db --name threads-backend devnerdy/threads-backend:latest
    ```
 
+   ##### GitHub 코드스페이스 또는 AMD64 환경(Intel Mac, Windows, Linux)에서 실행할 경우:
+
+   ```bash
+   docker run --platform linux/arm64/v8 -d -p 8000:8000 -v $(pwd)/threads_app.db:/app/threads_app.db --name threads-backend devnerdy/threads-backend:latest
+   ```
+
+   > 💡 참고 : 경고 메시지가 표시되더라도 컨테이너는 정상적으로 작동합니다. 경고 메시지는 이미지가 ARM64 아키텍처용으로 빌드되었지만 AMD64 환경에서 실행 중이라는 것을 알려주는 것입니다. `--platform` 옵션을 사용하면 Docker에게 어떤 플랫폼의 이미지를 사용할지 명시적으로 알려줍니다.
+
 5. 도커 데스크탑을 열고 아래와 같이 컨테이너가 실행되고 있음을 확인합니다.
    ![step03-open-docker-desktop](./img/step03-open-docker-desktop.png)
-6. 다음과 같이 `port` 섹션 아래 링크를 클릭해 브라우저를 엽니다.
+
+6. 로컬 환경에서는 `localhost:8000/docs` 경로로 이동합니다.
+
+   GitHub 코드스페이스 환경에서는 포트 탭에서 8000번 포트를 찾아 브라우저 아이콘을 클릭하거나, 제공되는 URL을 사용합니다.
+
    ![step03-port](./img/step03-port.png)
-7. `localhost:8000/docs` 경로로 이동합니다.
+
+   > 💡 GitHub 코드스페이스 환경에서는 포트가 자동으로 포워딩되며, 포트 탭에서 "Open in Browser" 버튼을 클릭하여 접근할 수 있습니다. URL은 일반적으로 `https://{codespace-name}-{port}.preview.app.github.dev` 형식입니다. 접속 후 주소 뒤에 `/docs`를 추가하여 Swagger UI에 접근하세요.
+
+7. Swagger UI에서 API 문서를 확인합니다.
    ![step03-swagger-ui](./img/step03-swagger-ui.png)
 
 ---

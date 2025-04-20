@@ -1,56 +1,55 @@
 {
 	"name": "GitHub Copilot Agent Mode Workshop",
 	"image": "mcr.microsoft.com/devcontainers/python:3.12",
-  
+
 	"features": {
-	  "ghcr.io/devcontainers/features/node:latest": {
-		"version": "lts"
-	  },
-	  "ghcr.io/devcontainers/features/docker-in-docker:latest": {},
-	  "ghcr.io/devcontainers/features/common-utils:latest": {}
+		"ghcr.io/devcontainers/features/node:latest": {
+			"version": "lts"
+		},
+		"ghcr.io/devcontainers/features/docker-in-docker:latest": {},
+		"ghcr.io/devcontainers/features/common-utils:latest": {}
 	},
-  
+
 	"customizations": {
-	  "vscode": {
-		"extensions": [
-		  "EditorConfig.EditorConfig",
-		  "GitHub.copilot",
-		  "GitHub.copilot-chat",
-		  "GitHub.vscode-github-actions",
-		  "GitHub.vscode-pull-request-github",
-		  "ms-azuretools.vscode-docker",
-		  "ms-python.python",
-		  "ms-python.vscode-pylance",
-		  "dbaeumer.vscode-eslint",
-		  "esbenp.prettier-vscode",
-		  "redhat.vscode-yaml"
-		],
-		"settings": {
-		  "python.defaultInterpreterPath": "/usr/local/bin/python",
-		  "python.linting.enabled": true,
-		  "python.linting.pylintEnabled": true,
-		  "python.formatting.provider": "autopep8",
-		  "editor.formatOnSave": true,
-		  "editor.codeActionsOnSave": {
-			"source.fixAll.eslint": true
-		  }
+		"vscode": {
+			"extensions": [
+				"EditorConfig.EditorConfig",
+				"GitHub.copilot",
+				"GitHub.copilot-chat",
+				"GitHub.vscode-github-actions",
+				"GitHub.vscode-pull-request-github",
+				"ms-azuretools.vscode-docker",
+				"ms-python.python",
+				"ms-python.vscode-pylance",
+				"dbaeumer.vscode-eslint",
+				"esbenp.prettier-vscode",
+				"redhat.vscode-yaml"
+			],
+			"settings": {
+				"python.defaultInterpreterPath": "/usr/local/bin/python",
+				"python.linting.enabled": true,
+				"python.linting.pylintEnabled": true,
+				"python.formatting.provider": "autopep8",
+				"editor.formatOnSave": true,
+				"editor.codeActionsOnSave": {
+					"source.fixAll.eslint": true
+				}
+			}
 		}
-	  }
 	},
-  
+
 	"postCreateCommand": "npm install -g figma-developer-mcp",
-  
+
 	"remoteEnv": {
-	  "FIGMA_API_KEY": "${localEnv:FIGMA_API_KEY}"
+		"FIGMA_API_KEY": "${localEnv:FIGMA_API_KEY}"
 	},
 	"containerEnv": {
-	  "FIGMA_API_KEY": "${localEnv:FIGMA_API_KEY}"
+		"FIGMA_API_KEY": "${localEnv:FIGMA_API_KEY}"
 	},
-  
-	"forwardPorts": [3000],
+
+	"forwardPorts": [3000, 8000],
 	"remoteUser": "vscode",
 	"hostRequirements": {
-	  "memory": "8gb"
+		"memory": "8gb"
 	}
-  }
-  
+}
