@@ -1,19 +1,19 @@
 services:
   backend:
     build:
-      context: ./complete/backend
+      context: ./backend
       dockerfile: Dockerfile
     ports:
       - "8000:8000"
     volumes:
-      - ./complete/backend:/app
+      - ./backend:/app
     environment:
       - DATABASE_URL=sqlite:///threads_app.db
     restart: unless-stopped
 
   frontend:
     build:
-      context: ./complete/frontend
+      context: ./frontend
       dockerfile: Dockerfile
     ports:
       - "80:80"
