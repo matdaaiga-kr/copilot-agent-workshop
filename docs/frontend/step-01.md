@@ -47,13 +47,13 @@
 
 ## Figma 디자인 구현
 
-[Figma](https://www.figma.com)로 미리 디자인 후, Figma MCP를 사용하면 Copilot이 구체적인 디자인을 구현할 수 있습니다. 이번 세션에서 사용된 Figma 파일은 [여기](https://www.figma.com/community/file/1493853152731177725)에서 확인할 수 있습니다.
+[Figma](https://www.figma.com)로 미리 디자인 후, Figma MCP를 사용하면 Copilot이 구체적인 디자인을 구현할 수 있습니다. 이번 세션에서 사용된 Figma 파일은 [여기](https://www.figma.com/community/file/1495954632647006209)에서 확인할 수 있습니다.
 
 1. 만약 GitHub Codespace를 사용한다면, [Figma 웹 페이지](https://www.figma.com)의 설정 - Security 창에서 API Key를 생성 후 `.devcontainer/devcontainer.json`에 아래 이미지를 참고하여 붙여넣습니다. <br/>
    ![screenshot](./img/step01_devcontainer.png)
 
 1. 아래 버튼을 눌러 workspace로 프로젝트를 불러옵니다.
-   ![screenshot](./img/step00_figma_workspace.png)
+   ![screenshot](./img/step01_figma_workspace.png)
 
 1. 구현하고 싶은 프레임을 선택하여 `오른쪽 클릭` - `Copy/Paste as` - `Copy link to selection`을 눌러 복사합니다.
    ![screenshot](./img/step00_figma_copy.png)
