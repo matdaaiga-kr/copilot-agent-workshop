@@ -6,9 +6,9 @@
 
 #### 만약 STEP 02를 완료하지 못했다면?
 
-[STEP 02의 번외 부분](./step-02.md#extra-completed-backend)에서 설명한 방법으로 완성된 백엔드 프로젝트를 복사할 수 있습니다.
+[STEP 02 : 번외](./step-02.md#extra-completed-backend)에서 설명한 방법으로 완성된 백엔드 프로젝트를 복사할 수 있습니다.
 
-> 💡 참고 : `complete/backend` 프로젝트를 복사하면, 이미 내부에 Dockerfile이 준비되어있기 때문에 복사된 프로젝트에서 `Dockerfile`을 삭제하는 것을 권장합니다.
+> 💡 참고 : `complete/backend` 프로젝트를 복사하면, 이미 내부에 Dockerfile이 준비되어있기 때문에 복사된 프로젝트에서 `Dockerfile`을 삭제해주세요.
 
 ## 도커 컨테이너 실행
 
