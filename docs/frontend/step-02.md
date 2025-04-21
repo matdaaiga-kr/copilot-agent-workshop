@@ -44,6 +44,25 @@
 
 1. `http://localhost:3000`으로 접속하여 앱을 실행시킵니다.
 
+## 백엔드 서버와 통신하기
+
+여기서부터는 이전 [STEP 03 : 어디서나 실행 가능한 워크샵 환경 만들기](../backend/step-03.md)에서 백엔드 앱 개발용 소스코드 파일들을 모두 생성한 상태라고 가정합니다. 만약 [STEP 02: 백엔드 API 개발](../backend/step-02.md)에서 완성한 프로그램을 실행 중이라면 종료해주세요.
+
+> 🥕 팁 : 만약 오류를 해결하지 못했다면, `complete/backend` 폴더를 복사해서 사용합니다.
+
+1. 실행중인 컨테이너들을 모두 종료합니다. <br/>
+   ![screenshot](img/step02_docker_stop.png)
+
+1. Copilot의 대화창에 아래 명령어를 입력합니다. 
+   ```text
+    frontend/Dockerfile, backend/Dockerfile을 참조해서 프론트엔드와 백엔드 컨테이너가 서로 통신할 수 있게 compose 파일을 만들어줘. 
+   ```
+1. 에이전트의 명령에 따라 compose 파일을 실행시키고, Docker Desktop에서 실행중인 것을 확인합니다. 
+   ![screenshot](img/step02_docker_compose.png)
+
+1. 프론트엔드 앱에 접속해 백엔드 API와 통신이 잘 되는 것을 확인합니다. 
+   ![screenshot](img/step02_docker_connect.png)
+
 ---
 
 축하합니다!! `도커로 어디서나 실행 가능한 워크샵 환경 만들기`이 끝났습니다!! 바이브 코딩을 이용한 여러분만의 애플리케이션 개발에 도전해보세요!!
