@@ -6,7 +6,7 @@
 
 > 🥕 팁 : 만약 오류를 해결하지 못했다면, `complete/frontend` 폴더를 복사해서 사용합니다.
 
-## 도커 컨테이너 실행
+## 루트 디렉토리 설정
 
 1. Visual Studio Code에서 **새 터미널**을 열고, 아래 명령어를 입력해 `$REPOSITORY_ROOT` 환경 변수를 설정합니다.
 
@@ -22,17 +22,27 @@
    $REPOSITORY_ROOT = git rev-parse --show-toplevel
    ```
 
-1. 이어서 `$REPOSITORY_ROOT/complete`로 이동합니다. 
+1. 이어서 `$REPOSITORY_ROOT/{YOUR_PROJECT_NAME}`로 이동합니다. 
    ```bash
-   cd $REPOSITORY_ROOT/complete
+   cd $REPOSITORY_ROOT/{YOUR_PROJECT_NAME}
+   ```
+   > 여기서 프로젝트 명은 프론트엔드 앱을 생성할 때 만든 폴더의 이름입니다. 
+
+## 도커 파일 생성
+
+1. Copilot 대화창에 다음 프롬프트를 입력합니다. 
+   ```text
+   프론트엔드 앱을 배포하기 위한 dockerfile을 만들어줘. 포트는 3000번 포트 그대로 사용하고싶어. 
    ```
 
-1. 아래 명령어로 도커 파일을 실행합니다. 
-   ```bash
-   docker compose up
-   ```
+1. Dockerfile이 생성되었으면 에이전트의 설명에 따라 Dockerfile을 실행시킵니다. 
+   > Docker Desktop이 실행중인지 확인해주세요! 실행중이 아니라면 작동하지 않습니다. 
 
-1. `http://localhost:80`으로 접속하여 앱을 실행시킵니다.
+1. Docker Desktop을 켜서 컨테이너가 실행중인 것을 확인합니다. 
+   ![screenshot](img/step02_docker_desktop.png)
+
+
+1. `http://localhost:3000`으로 접속하여 앱을 실행시킵니다.
 
 ---
 
