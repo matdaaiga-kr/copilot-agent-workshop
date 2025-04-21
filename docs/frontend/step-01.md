@@ -2,55 +2,62 @@
 
 ## 사전 준비 사항
 
-이전 [STEP 00 : 개발 환경 설정](./step-00.md)에서 개발 환경을 모두 설정한 상태라고 가정합니다.
+이전 [개발 환경 설정](../README.md)에서 개발 환경을 모두 설정한 상태라고 가정합니다.
 
-만약 GitHub Codespace를 사용한다면 이전 단계를 생략하고 [Figma 디자인 구현](#figma-디자인-구현)으로 넘어갑니다.
+만약 GitHub Codespace를 사용한다면 이전 단계를 생략하고 [Visual Studio Code, GitHub Copilot의 MCP 사용 설정](#visual-studio-code-github-copilot의-mcp-사용-설정)으로 넘어갑니다.
 
 ## GitHub Copilot 설정
 
 1. 설정에서 `Agent`를 검색하고 아래와 같이 적용합니다.
-   ![screenshot](./img/step00_agent_enable.png)
+   ![screenshot](./img/step01_agent_enable.png)
 
-1. 화면 좌측의 `채팅` 아이콘을 눌러 Copilot 대화창을 엽니다. <br/>
-   ![screenshot](./img/step00_open_copilot.png)
+1. 화면 상단 `Copilot` 아이콘을 눌러 Copilot 대화창을 엽니다. <br/>
+   ![screenshot](./img/step01_open_copilot.png)
 
 1. 대화창 하단의 드롭다운 버튼을 눌러 `에이전트 모드`로 바꿉니다.
-   ![screenshot](./img/step00_agent_mode.png)
+   ![screenshot](./img/step01_agent_mode.png)
 
 1. 대화창 하단의 드롭다운 버튼을 눌러 AI 모델을 `Claude 3.7 Sonnet`으로 바꿉니다.
-   ![screenshot](./img/step00_claude.png)
+   ![screenshot](./img/step01_claude.png)
 
 ## Visual Studio Code, GitHub Copilot의 MCP 사용 설정
 
-1. 에이전트 모드를 사용할 준비가 되었습니다. 이제 에이전트가 MCP를 사용 설정 하겠습니다. 설정에서 `MCP`를 검색하여 사용을 활성화 해 줍니다.
-   ![screenshot](./img/step00_mcp_enable.png)
+1. 에이전트 모드를 사용할 준비가 되었습니다. 이제 에이전트가 MCP를 사용할 수 있도록 설정하겠습니다. 만약 GitHub Codespace를 사용중이라면 대화창 하단의 아래 버튼을 누릅니다. <br/>
+  ![screenshot](./img/step01_codespace_tool.png)
+
+1. [Figma 웹 페이지](https://www.figma.com)의 설정 - Security 창에서 API Key를 생성 후, 화면 중앙 상단에 API 키를 입력합니다. 
+  ![screenshot](./img/step01_figma_api.png)
+
+1. Codespace에서 Figma MCP를 사용할 준비가 완료되었습니다. 아래 내용은 생략하고 [Figma 디자인 구현](#figma-디자인-구현)으로 넘어갑니다.
+
+1. Visual Studio Code를 사용한다면, 설정에서 `MCP`를 검색하여 사용을 활성화 해 줍니다.
+   ![screenshot](./img/step01_mcp_enable.png)
 
 1. Figma MCP를 설정해보겠습니다. 대화창 하단의 `도구 선택` 버튼을 누릅니다.
-   ![screenshot](./img/step00_select_tool.png)
+   ![screenshot](./img/step01_select_tool.png)
 
 1. `MCP 서버 추가` - `NPM 패키지`를 선택합니다.  
-   ![screenshot](./img/step00_select_npm.png)
+   ![screenshot](./img/step01_select_npm.png)
 
 1. `figma-developer-mcp`를 입력합니다.
-   ![screenshot](./img/step00_figma_mcp.png)
+   ![screenshot](./img/step01_figma_mcp.png)
 
-1. `허용` - `엔터키` - `사용자 설정`을 누릅니다.
-   ![screenshot](./img/step00_select_setting.png)
+1. `허용` - `엔터키` - `작업 영역 설정`을 누릅니다.
+   ![screenshot](./img/step01_select_setting.png)
 
 1. `settings.json` 파일이 열립니다. `YOUR_FIGMA_API_KEY` 부분에 Figma API Key를 넣어야 합니다. [Figma 웹 페이지](https://www.figma.com)의 설정 - Security 창에서 API Key를 생성 후 붙여넣습니다. <br/>
-   ![screenshot](./img/step00_api_key.png)
+   ![screenshot](./img/step01_api_key.png)
 
 1. `도구 선택` 버튼에 두 개의 도구가 추가된 것을 확인합니다. <br/>
-   ![screenshot](./img/step00_new_tools.png)
+   ![screenshot](./img/step01_new_tools.png)
 
 이제 개발환경 설정이 완료되었습니다!
 
 ## Figma 디자인 구현
 
-[Figma](https://www.figma.com)로 미리 디자인 후, Figma MCP를 사용하면 Copilot이 구체적인 디자인을 구현할 수 있습니다. 이번 세션에서 사용된 Figma 파일은 [여기](https://www.figma.com/community/file/1495954632647006209)에서 확인할 수 있습니다.
+[Figma](https://www.figma.com)로 미리 디자인 후, Figma MCP를 사용하면 Copilot이 구체적인 디자인을 구현할 수 있습니다. 
 
-1. 만약 GitHub Codespace를 사용한다면, [Figma 웹 페이지](https://www.figma.com)의 설정 - Security 창에서 API Key를 생성 후 `.devcontainer/devcontainer.json`에 아래 이미지를 참고하여 붙여넣습니다. <br/>
-   ![screenshot](./img/step01_devcontainer.png)
+1. [Figma 디자인 링크](https://www.figma.com/community/file/1495954632647006209)에 접속합니다. 
 
 1. 아래 버튼을 눌러 workspace로 프로젝트를 불러옵니다.
    ![screenshot](./img/step01_figma_workspace.png)
