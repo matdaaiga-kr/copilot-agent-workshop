@@ -4,11 +4,15 @@
 
 이전 [STEP 02 : 백엔드 API 개발](./step-02.md)에서 백엔드 API 개발용 소스코드 파일들을 모두 생성한 상태라고 가정합니다. 만약 STEP 2에서 완성한 프로그램을 실행 중이라면 종료해주세요.
 
-> 🥕 팁 : 만약 오류를 해결하지 못했다면, `complete/backend` 폴더를 복사해서 사용합니다.
+#### 만약 STEP 02를 완료하지 못했다면?
+
+[STEP 02 : 번외](./step-02.md#extra-completed-backend)에서 설명한 방법으로 완성된 백엔드 프로젝트를 복사할 수 있습니다.
+
+> 💡 참고 : `complete/backend` 프로젝트를 복사하면, 이미 내부에 Dockerfile이 준비되어있기 때문에 복사된 프로젝트에서 `Dockerfile`을 삭제해주세요.
 
 ## 도커 컨테이너 실행
 
-1. Visual Studio Code에서 **새 터미널**을 열고, 아래 명령어를 입력해 `$REPOSITORY_ROOT` 환경 변수를 설정합니다.
+1. **새 터미널**을 열고, 아래 명령어를 입력해 `$REPOSITORY_ROOT` 환경 변수를 설정합니다.
 
    > ⚠️ 주의 : 자신이 사용 중인 터미널 종류에 따라 다음 두 명령어 중 하나를 입력합니다.
 
@@ -26,7 +30,7 @@
    ```bash
    cd $REPOSITORY_ROOT/backend
    ```
-3. Visual Studio Code에서 새 터미널을 열고, 아래 명령어를 터미널에 입력해 도커 데스크탑을 실행하고 있는 지 다시 확인합니다.
+3. 아래 명령어를 터미널에 입력해 도커 엔진을 실행하고 있는 지 다시 확인합니다.
 
    ```bash
    docker info
@@ -34,36 +38,40 @@
 
    > ⚠️ 주의 : 시스템 정보가 출력되지 않고 에러 메세지가 나온다면, 도커 데스크탑을 설치 및 실행해주세요.
 
-4. 아래 명령어를 터미널에 입력해 도커 컨테이너를 실행합니다.
+4. 프롬프트에 다음 내용을 입력해 코파일럿이 `backend` 프로젝트에서 Dockerfile을 작성하도록 합니다.
 
-   ##### 로컬 환경(Apple Silicon Mac)에서 실행할 경우:
-
-   ```bash
-   docker run -d -p 8000:8000 -v $(pwd)/threads_app.db:/app/threads_app.db --name threads-backend devnerdy/threads-backend:latest
+   ```text
+   backend 경로에 있는 프로젝트를 위한 Dockfile을 backend 폴더 안에 작성해줘
    ```
 
-   ##### GitHub 코드스페이스 또는 AMD64 환경(Intel Mac, Windows, Linux)에서 실행할 경우:
+5. 프롬프트에 다음 내용을 입력해 코파일럿이 `backend` 프로젝트를 컨테이너로 실행할 수 있도록 합니다.
 
-   ```bash
-   docker run --platform linux/arm64/v8 -d -p 8000:8000 -v $(pwd)/threads_app.db:/app/threads_app.db --name threads-backend devnerdy/threads-backend:latest
+   ```text
+   backend/Dockerfile을 이용해 컨테이너를 실행해줘
    ```
 
-   > 💡 참고 : 경고 메시지가 표시되더라도 컨테이너는 정상적으로 작동합니다. 경고 메시지는 이미지가 ARM64 아키텍처용으로 빌드되었지만 AMD64 환경에서 실행 중이라는 것을 알려주는 것입니다. `--platform` 옵션을 사용하면 Docker에게 어떤 플랫폼의 이미지를 사용할지 명시적으로 알려줍니다.
+6. 프로젝트를 실행했다면, 이제 프로젝트의 오류를 마주칠 때 해당 오류를 수정해달라는 내용을 GitHub Copilot 프롬프트에 입력합니다.
 
-5. 도커 데스크탑을 열고 아래와 같이 컨테이너가 실행되고 있음을 확인합니다.
-   ![step03-open-docker-desktop](./img/step03-open-docker-desktop.png)
+   ```text
+   # 예시
+   1. "CORS 에러가 나는데, 수정해줘"
+   2. 터미널 오류 메세지를 프롬프트에 복사+붙여넣기한 후, "이거 수정해줘"
+   ```
 
-6. 로컬 환경에서는 `localhost:8000/docs` 경로로 이동합니다.
+7. 모든 오류가 수정되어 애플리케이션이 정상 작동하면, 다음과 같이 `브라우저에서 열기` 버튼을 눌러 애플리케이션 실행 화면으로 이동합니다.
 
-   GitHub 코드스페이스 환경에서는 포트 탭에서 8000번 포트를 찾아 브라우저 아이콘을 클릭하거나, 제공되는 URL을 사용합니다.
+   > 💡 참고 : Visual Studio Code를 사용 중이라면, 애플리케이션 실행 후 [http://localhost:8000](http://localhost:8000)으로 이동하면 됩니다.
 
-   ![step03-port](./img/step03-port.png)
+   ![step03-docker-app-open](./img/step03-docker-app-open.png)
 
-   > 💡 GitHub 코드스페이스 환경에서는 포트가 자동으로 포워딩되며, 포트 탭에서 "Open in Browser" 버튼을 클릭하여 접근할 수 있습니다. URL은 일반적으로 `https://{codespace-name}-{port}.preview.app.github.dev` 형식입니다. 접속 후 주소 뒤에 `/docs`를 추가하여 Swagger UI에 접근하세요.
+8. 백엔드 애플리케이션 URL 뒤에 `/docs` 경로를 붙여 이동합니다.
 
-7. Swagger UI에서 API 문서를 확인합니다.
-   ![step03-swagger-ui](./img/step03-swagger-ui.png)
+   > 💡 참고 : Visual Studio Code를 사용 중이라면, [http://localhost:8000/docs](http://localhost:8000/docs)로 이동하면 됩니다.
+
+   ![step03-navigate-docs](./img/step02-navigate-docs.png)
+
+9. 이제 앱을 테스트해봅니다. [STEP 02의 애플리케이션 테스트 섹션](./step-02.md#application-test)을 참고합니다.
 
 ---
 
-축하합니다!! `도커로 어디서나 실행 가능한 워크샵 환경 만들기`이 끝났습니다!! 바이브 코딩을 이용한 여러분만의 애플리케이션 개발에 도전해보세요!!
+축하합니다!! `도커로 어디서나 실행 가능한 워크샵 환경 만들기`까지 끝났습니다!! 이어서 [GitHub Copilot만으로 SNS 웹앱 만들기(Frontend - React)](../frontend/README.md)를 시작해보겠습니다.
