@@ -226,7 +226,8 @@
 ## GitHub Copilot 설정
 
 1. 설정에서 `Agent`를 검색하고 아래와 같이 적용합니다.
-   ![screenshot](./img/step01_agent_enable.png)
+   > 💡 참고 : `ctrl+shift+p` 또는 `cmd_shift+p`를 이용해 검색창을 열어준 뒤, `Preferences : Open User Settings`를 클릭해 설정으로 이동합니다.
+   > ![screenshot](./img/step01_agent_enable.png)
 
 ---
 
