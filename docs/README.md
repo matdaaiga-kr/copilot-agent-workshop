@@ -25,17 +25,19 @@
 
 ### Node.js 설치 확인
 
-1. 터미널에서 아래 명령어를 실행시켜 Node.js가 설치되었는지 확인합니다. 
-    ```
-    which node
-    ```
+1. 터미널에서 아래 명령어를 실행시켜 Node.js가 설치되었는지 확인합니다.
+
+   ```
+   which node
+   ```
+
    `node`를 실행시킬 수 있는 경로가 보이지 않는다면 설치하지 않은 것입니다. 만약 설치하지 않았다면 [Node.js 설치 페이지](https://nodejs.org/ko/download)에서 최신 버전을 다운로드 받아 설치합니다.
 
-1. 터미널에서 아래 명령어를 실행시켜 현재 설치한 Node.js 버전을 확인합니다. 
-    ```
-    node --version
-    ```
-    `22.14.0` 이상의 버전이 있어야 합니다. 만약 이보다 버전이 낮다면 [Node.js 설치 페이지](https://nodejs.org/ko/download)에서 최신 버전을 다운로드 받아 설치합니다.
+1. 터미널에서 아래 명령어를 실행시켜 현재 설치한 Node.js 버전을 확인합니다.
+   ```
+   node --version
+   ```
+   `22.14.0` 이상의 버전이 있어야 합니다. 만약 이보다 버전이 낮다면 [Node.js 설치 페이지](https://nodejs.org/ko/download)에서 최신 버전을 다운로드 받아 설치합니다.
 
 ### git CLI 설치 확인
 
@@ -221,6 +223,11 @@
    code --install-extension "github.copilot-chat" --force
    ```
 
+## GitHub Copilot 설정
+
+1. 설정에서 `Agent`를 검색하고 아래와 같이 적용합니다.
+   ![screenshot](./img/step01_agent_enable.png)
+
 ---
 
-수고하셨습니다!! **개발 환경 설정** 부분이 끝났습니다. 이제 [STEP 01 : 프롬프트 입력을 위한 기본 설정](backend/step-01.md) 단계로 넘어가겠습니다.
+수고하셨습니다!! **개발 환경 설정** 부분이 끝났습니다. 이제 [STEP 01 : 프롬프트 입력을 위한 기본 설정](./backend/step-01.md) 단계로 넘어가겠습니다.
