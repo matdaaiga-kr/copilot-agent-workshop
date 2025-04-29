@@ -4,29 +4,13 @@
 
 이전 [개발 환경 설정](../README.md)에서 개발 환경을 모두 설정한 상태라고 가정합니다.
 
-만약 GitHub Codespace를 사용한다면 이전 단계를 생략하고 [Visual Studio Code, GitHub Copilot의 MCP 사용 설정](#visual-studio-code-github-copilot의-mcp-사용-설정)으로 넘어갑니다.
-
-## GitHub Copilot 설정
-
-1. 설정에서 `Agent`를 검색하고 아래와 같이 적용합니다.
-   ![screenshot](./img/step01_agent_enable.png)
-
-1. 화면 상단 `Copilot` 아이콘을 눌러 Copilot 대화창을 엽니다. <br/>
-   ![screenshot](./img/step01_open_copilot.png)
-
-1. 대화창 하단의 드롭다운 버튼을 눌러 `에이전트 모드`로 바꿉니다.
-   ![screenshot](./img/step01_agent_mode.png)
-
-1. 대화창 하단의 드롭다운 버튼을 눌러 AI 모델을 `Claude 3.7 Sonnet`으로 바꿉니다.
-   ![screenshot](./img/step01_claude.png)
-
 ## Visual Studio Code, GitHub Copilot의 MCP 사용 설정
 
 1. 에이전트 모드를 사용할 준비가 되었습니다. 이제 에이전트가 MCP를 사용할 수 있도록 설정하겠습니다. 만약 GitHub Codespace를 사용중이라면 대화창 하단의 아래 버튼을 누릅니다. <br/>
-  ![screenshot](./img/step01_codespace_tool.png)
+   ![screenshot](./img/step01_codespace_tool.png)
 
-1. [Figma 웹 페이지](https://www.figma.com)의 설정 - Security 창에서 API Key를 생성 후, 화면 중앙 상단에 API 키를 입력합니다. 
-  ![screenshot](./img/step01_figma_api.png)
+1. [Figma 웹 페이지](https://www.figma.com)의 설정 - Security 창에서 API Key를 생성 후, 화면 중앙 상단에 API 키를 입력합니다.
+   ![screenshot](./img/step01_figma_api.png)
 
 1. Codespace에서 Figma MCP를 사용할 준비가 완료되었습니다. 아래 내용은 생략하고 [Figma 디자인 구현](#figma-디자인-구현)으로 넘어갑니다.
 
@@ -55,9 +39,9 @@
 
 ## Figma 디자인 구현
 
-[Figma](https://www.figma.com)로 미리 디자인 후, Figma MCP를 사용하면 Copilot이 구체적인 디자인을 구현할 수 있습니다. 
+[Figma](https://www.figma.com)로 미리 디자인 후, Figma MCP를 사용하면 Copilot이 구체적인 디자인을 구현할 수 있습니다.
 
-1. [Figma 디자인 링크](https://www.figma.com/community/file/1495954632647006209)에 접속합니다. 
+1. [Figma 디자인 링크](https://www.figma.com/community/file/1495954632647006209)에 접속합니다.
 
 1. 아래 버튼을 눌러 workspace로 프로젝트를 불러옵니다.
    ![screenshot](./img/step01_figma_workspace.png)
@@ -89,9 +73,11 @@
    ```
 
 ## Copilot 지침 설정
+
 2. Visual Studio Code 터미널에 아래 명령어를 입력해 커스텀 코파일럿 지침 내용을 만듭니다.
 
    > ⚠️ 주의 : 자신이 사용 중인 터미널 종류에 따라 다음 두 명령어 중 하나를 입력합니다.
+
    ```bash
    # Bash/Zsh
    cp -r $REPOSITORY_ROOT/start/frontend/.github/. $REPOSITORY_ROOT/.github/
