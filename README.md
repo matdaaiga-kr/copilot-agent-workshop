@@ -1,3 +1,7 @@
+**이 리포지토리는 더이상 업데이트되지 않습니다. 대신 [https://github.com/microsoft/github-copilot-vibe-coding-workshop](https://github.com/microsoft/github-copilot-vibe-coding-workshop)을 활용해 주세요.**
+
+---
+
 # GitHub Copilot 어디까지 되는 거예요?
 
 GitHub Copilot의 agent mode를 이용해서 SNS 서비스를 만드는 워크샵입니다.
